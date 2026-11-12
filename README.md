@@ -35,4 +35,4 @@ python3 -m http.server 8000   # then open http://localhost:8000
 
 - Text, jobs, projects: edit the matching `<section>` in `index.html`.
 - Pixel icons: ASCII maps in `ICONS` inside `js/main.js` (`#` ink, `a` teal, `b` amber).
-- Resume button: drop a PDF in `assets/` and uncomment the button in the hero.
+- Resume: replace `assets/Pedro_Ivo_Almeida_Resume.pdf` (keep the phone number off the public copy).
