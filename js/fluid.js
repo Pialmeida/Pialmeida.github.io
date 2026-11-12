@@ -73,7 +73,14 @@
     // Offset half a cell vertically so shedding is not perfectly symmetric.
     const r = Math.max(4, Math.round(Math.min(H * 0.085, W * 0.07)));
     D = 2 * r;
-    const cx = Math.round(W * (narrow ? 0.3 : 0.5));
+    // On wide screens, park the cylinder just right of the hero text block so it never sits behind it.
+    let cx = Math.round(W * 0.3);
+    if (!narrow) {
+      const text = hero.querySelector('.hero-lede');
+      const edge = text ? (text.getBoundingClientRect().right - rect.left) / rect.width : 0.55;
+      cx = Math.round(Math.min(0.78, Math.max(0.6, edge + 0.04)) * W + 1.5 * r);
+      cx = Math.min(cx, Math.round(W * 0.8));
+    }
     const cy = Math.round(H * 0.68) + 0.5;
     heatStart = Math.max(1, cx - r);
     for (let y = 0; y < H; y++)
