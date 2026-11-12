@@ -64,6 +64,32 @@ test('fluid simulation draws and updates', async ({ page }) => {
   expect((await sample()).sum).toBe(c1.sum);
 });
 
+test('resizing the window does not break the simulation', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'mobile viewport size is fixed by the device emulation');
+  await page.addInitScript(() => { window.__FLUID_DEBUG__ = {}; });
+  await page.goto('/');
+  await page.waitForFunction(() => window.__FLUID_DEBUG__.sim?.warmup === 0, null, { timeout: 20_000 });
+
+  const canvas = page.locator('#flow');
+  const sample = () => canvas.evaluate(c => {
+    const d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+    let sum = 0;
+    for (let i = 0; i < d.length; i += 4) sum += d[i] * 3 + d[i + 1] * 5 + d[i + 2] * 7;
+    return sum;
+  });
+
+  // Drag the window across the narrow/wide layout breakpoint (700px), as a real resize would.
+  for (const size of [{ width: 480, height: 900 }, { width: 1440, height: 900 }, { width: 900, height: 700 }]) {
+    await page.setViewportSize(size);
+    await page.waitForFunction(() => window.__FLUID_DEBUG__.sim?.warmup === 0, null, { timeout: 20_000 });
+    await expect(canvas).toBeVisible();
+    const a = await sample();
+    await page.waitForTimeout(600);
+    const b = await sample();
+    expect(b, `simulation should still be animating after resizing to ${size.width}x${size.height}`).not.toBe(a);
+  }
+});
+
 test('cylinder does not sit behind the hero text', async ({ page, isMobile }) => {
   test.skip(isMobile, 'on phones the text spans the full width by design');
   await page.addInitScript(() => { window.__FLUID_DEBUG__ = {}; });

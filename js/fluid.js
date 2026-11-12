@@ -252,6 +252,20 @@
       `LBM D2Q9+D2Q5 · Re ${RE} · Pr ${PR} · Nu_D ${nuAvg.toFixed(1)} · t = ${steps.toLocaleString()}`;
   }
 
+  // The crude zero-gradient outflow BC slowly destabilizes this BGK scheme over tens of
+  // thousands of steps; nothing throws when it does, the field just drifts to NaN and
+  // freezes. Cheaper to detect and restart than to engineer a truly absorbing outflow
+  // for a decorative background. A hard step cap is a backstop for stable-but-stale runs.
+  const MAX_STEPS = 45000;
+  function diverged() {
+    if (steps > MAX_STEPS) return true;
+    for (let k = 0; k < 6; k++) {
+      const idx = Math.floor(Math.random() * N);
+      if (!Number.isFinite(ux[idx]) || !Number.isFinite(uy[idx]) || !Number.isFinite(T[idx])) return true;
+    }
+    return false;
+  }
+
   let frameCount = 0;
   function frame() {
     if (visible && (running || warmup > 0)) {
@@ -264,6 +278,7 @@
       } else {
         stir();
         for (let k = 0; k < 3; k++) step();
+        if (diverged()) init();
         render();
       }
       if (frameCount++ % 8 === 0 || warmup === 0) updateHud();
@@ -299,6 +314,13 @@
     lastWidth = window.innerWidth;
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => { if (init()) render(); }, 200);
+  });
+  // Phone rotation: iOS Safari can fire 'resize' with stale pre-rotation dimensions before
+  // layout settles, which the check above would then ignore as a no-op. Re-measure explicitly
+  // once the rotation itself has finished, regardless of what 'resize' reported.
+  window.addEventListener('orientationchange', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => { lastWidth = window.innerWidth; if (init()) render(); }, 350);
   });
 
   // Read-only hook for the automated tests (tests/). Inactive unless the page opts in.
