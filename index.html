@@ -199,7 +199,7 @@
         <p class="section-label pixel">03 · Projects</p>
         <h2>Selected work</h2>
         <div class="projects">
-          <article class="project featured">
+          <article class="project featured" data-project="rl-flow-control">
             <div class="project-art" data-pixel="cylinder" aria-hidden="true"></div>
             <div class="project-body">
               <p class="project-kicker pixel">Research · 2021–2024</p>
@@ -212,10 +212,11 @@
               </p>
               <p class="aside-note">The simulation at the top of this page is a tiny, browser-sized cousin of this setup, with a heated plate added: lattice-Boltzmann flow plus a thermal lattice for temperature, reporting a live wall Nusselt number.</p>
               <ul class="tags"><li>C++</li><li>OpenFOAM</li><li>Deep RL</li><li>MPI</li></ul>
+              <button class="project-open" type="button">View details →</button>
             </div>
           </article>
 
-          <article class="project">
+          <article class="project" data-project="wall-pressure-extrema">
             <div class="project-art" data-pixel="wave" aria-hidden="true"></div>
             <div class="project-body">
               <p class="project-kicker pixel">Research · 2024–present</p>
@@ -226,10 +227,11 @@
                 50,000+ pressure extrema per case across channel, pipe, and boundary-layer flows.
               </p>
               <ul class="tags"><li>Nek5000</li><li>Python</li><li>MATLAB</li><li>DNS</li></ul>
+              <button class="project-open" type="button">View details →</button>
             </div>
           </article>
 
-          <article class="project">
+          <article class="project" data-project="fourier-fingerprint">
             <div class="project-art" data-pixel="frames" aria-hidden="true"></div>
             <div class="project-body">
               <p class="project-kicker pixel">Computer vision · 2026</p>
@@ -244,10 +246,11 @@
               </p>
               <p class="aside-note">Built during my VSP Vision internship; presented to the team but not yet in production.</p>
               <ul class="tags"><li>Computer vision</li><li>SAM</li><li>Fourier analysis</li><li>Forecasting</li></ul>
+              <button class="project-open" type="button">Try the live demo →</button>
             </div>
           </article>
 
-          <article class="project">
+          <article class="project" data-project="vgc-selfplay">
             <div class="project-art" data-pixel="tree" aria-hidden="true"></div>
             <div class="project-body">
               <p class="project-kicker pixel">Personal · 2026–present</p>
@@ -259,10 +262,11 @@
                 multi-node SLURM jobs past 1M self-play games per seed, backed by 1,800+ tests.
               </p>
               <ul class="tags"><li>PyTorch</li><li>Game theory</li><li>HPC</li></ul>
+              <button class="project-open" type="button">View details →</button>
             </div>
           </article>
 
-          <article class="project">
+          <article class="project" data-project="histopath-cnn">
             <div class="project-art" data-pixel="cells" aria-hidden="true"></div>
             <div class="project-body">
               <p class="project-kicker pixel">Deep learning · 2021</p>
@@ -272,10 +276,11 @@
                 using a custom CNN with an Inception-style multi-scale module and data augmentation.
               </p>
               <ul class="tags"><li>TensorFlow</li><li>CNNs</li><li>Computer vision</li></ul>
+              <button class="project-open" type="button">View details →</button>
             </div>
           </article>
 
-          <article class="project">
+          <article class="project" data-project="capstone-device">
             <div class="project-art" data-pixel="chip" aria-hidden="true"></div>
             <div class="project-body">
               <p class="project-kicker pixel">Engineering · 2020–2021</p>
@@ -285,6 +290,7 @@
                 Bluetooth communication, and custom boards, integrated with the mechanical subteam.
               </p>
               <ul class="tags"><li>Embedded</li><li>Electronics</li><li>Teamwork</li></ul>
+              <button class="project-open" type="button">View details →</button>
             </div>
           </article>
         </div>
@@ -375,6 +381,56 @@
     </section>
   </main>
 
+  <!-- PROJECT DETAIL MODAL -->
+  <dialog class="project-modal" id="project-modal" aria-labelledby="project-modal-title">
+    <button class="project-modal-close" type="button" aria-label="Close dialog">×</button>
+    <div class="project-modal-art" aria-hidden="true"></div>
+    <div class="project-modal-content">
+      <p class="project-modal-kicker pixel"></p>
+      <h3 id="project-modal-title">Project details</h3>
+      <div class="project-modal-text"></div>
+      <ul class="tags project-modal-tags"></ul>
+      <div class="project-modal-extra"></div>
+    </div>
+  </dialog>
+
+  <template id="fourier-demo-template">
+    <div class="fourier-demo">
+      <p class="fourier-intro">
+        Try the descriptor live: drag the slider to change how many Fourier harmonics are kept
+        (lowest frequency magnitude first), or draw your own closed shape and reconstruct that instead.
+      </p>
+      <div class="fourier-row">
+        <div class="fourier-pane">
+          <p class="fourier-label pixel">Mock lens outline</p>
+          <canvas class="fourier-canvas" data-role="lens-original" width="260" height="170"></canvas>
+        </div>
+        <div class="fourier-pane">
+          <p class="fourier-label pixel">Reconstruction</p>
+          <canvas class="fourier-canvas" data-role="lens-recon" width="260" height="170"></canvas>
+        </div>
+      </div>
+      <div class="fourier-controls">
+        <div class="fourier-slider-label">
+          <label for="fourier-descriptor-slider">Fourier descriptors</label>:
+          <output class="fourier-count" for="fourier-descriptor-slider" data-role="count">6</output>
+        </div>
+        <input type="range" id="fourier-descriptor-slider" class="fourier-slider" data-role="slider" min="1" max="30" value="6">
+      </div>
+      <div class="fourier-row">
+        <div class="fourier-pane">
+          <p class="fourier-label pixel">Draw a closed shape</p>
+          <canvas class="fourier-canvas fourier-draw" data-role="draw" width="260" height="170"></canvas>
+          <button type="button" class="fourier-clear" data-role="clear">Clear drawing</button>
+        </div>
+        <div class="fourier-pane">
+          <p class="fourier-label pixel">Your reconstruction</p>
+          <canvas class="fourier-canvas" data-role="draw-recon" width="260" height="170"></canvas>
+        </div>
+      </div>
+    </div>
+  </template>
+
   <footer class="site-footer">
     <div class="container">
       <p>© <span id="year">2026</span> Pedro Ivo Almeida · Hand-built with HTML, CSS &amp; a small lattice-Boltzmann solver.</p>
@@ -384,5 +440,7 @@
 
   <script src="js/main.js" defer></script>
   <script src="js/fluid.js" defer></script>
+  <script src="js/fourier.js" defer></script>
+  <script src="js/projects.js" defer></script>
 </body>
 </html>

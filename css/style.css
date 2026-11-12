@@ -255,7 +255,7 @@ img, svg { display: block; max-width: 100%; }
 /* Projects */
 .projects { display: grid; grid-template-columns: repeat(2, 1fr); gap: 24px; }
 .project {
-  display: flex; flex-direction: column;
+  display: flex; flex-direction: column; cursor: pointer;
   background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
   overflow: hidden; box-shadow: var(--shadow); transition: transform .2s, border-color .2s;
 }
@@ -275,11 +275,64 @@ img, svg { display: block; max-width: 100%; }
 .project-kicker { color: var(--accent) !important; font-size: .85rem !important; text-transform: uppercase; margin-bottom: 8px; }
 .project h3 { font-size: 1.2rem; }
 .aside-note { font-size: .88rem !important; font-style: italic; }
+.project-open {
+  align-self: flex-start; margin-top: 14px; font-family: inherit;
+  background: none; border: 1px solid var(--line); color: var(--accent);
+  padding: 8px 14px; border-radius: 8px; font-size: .88rem; font-weight: 600; cursor: pointer;
+}
+.project-open:hover { border-color: var(--accent); background: color-mix(in srgb, var(--accent) 8%, transparent); }
 @media (max-width: 820px) {
   .projects { grid-template-columns: 1fr; }
   .project.featured { flex-direction: column; }
   .project.featured .project-art { border-right: 0; border-bottom: 1px solid var(--line); }
 }
+
+/* Project detail modal */
+dialog.project-modal {
+  width: min(680px, calc(100vw - 48px));
+  max-height: calc(100vh - 64px);
+  overflow-y: auto; padding: 0;
+  background: var(--surface); color: var(--text);
+  border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow);
+}
+dialog.project-modal::backdrop { background: rgb(10 14 20 / .6); backdrop-filter: blur(2px); }
+dialog.project-modal[open] { animation: modal-in .15s ease-out; }
+@media (prefers-reduced-motion: reduce) { dialog.project-modal[open] { animation: none; } }
+@keyframes modal-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+.project-modal-close {
+  position: sticky; top: 12px; z-index: 1; display: block; margin: 12px 12px 0 auto; font-family: inherit;
+  width: 32px; height: 32px; border-radius: 8px; border: 1px solid var(--line);
+  background: var(--surface); color: var(--text); font-size: 1.1rem; line-height: 1; cursor: pointer;
+}
+.project-modal-close:hover { border-color: var(--accent); color: var(--accent); }
+.project-modal-art { padding: 4px 28px 0; display: grid; place-items: center; }
+.project-modal-art svg { width: 100%; max-width: 160px; height: auto; }
+.project-modal-content { padding: 8px 28px 28px; }
+.project-modal-content h3 { font-size: 1.35rem; }
+.project-modal-content p { color: var(--muted); }
+.project-modal-tags { margin-bottom: 8px; }
+
+/* Fourier-descriptor demo (eyewear frame project) */
+.fourier-demo { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 20px; }
+.fourier-intro { color: var(--muted); font-size: .92rem; }
+.fourier-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.fourier-pane { text-align: center; }
+.fourier-label { font-size: .8rem; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; }
+.fourier-canvas {
+  width: 100%; height: auto; display: block;
+  background: var(--bg-alt); border: 1px solid var(--line); border-radius: 8px;
+}
+.fourier-draw { cursor: crosshair; }
+.fourier-controls { margin: 4px 0 20px; }
+.fourier-slider-label { display: block; font-size: .9rem; font-weight: 600; margin-bottom: 8px; }
+.fourier-count { font-family: var(--pixel); color: var(--accent); }
+.fourier-slider { width: 100%; }
+.fourier-clear {
+  margin-top: 8px; font-family: inherit; font-size: .82rem; padding: 6px 12px; border-radius: 6px;
+  border: 1px solid var(--line); background: none; color: var(--text); cursor: pointer;
+}
+.fourier-clear:hover { border-color: var(--accent); color: var(--accent); }
+@media (max-width: 480px) { .fourier-row { grid-template-columns: 1fr; } }
 
 /* Research */
 .research-grid { display: grid; grid-template-columns: 1.7fr 1fr; gap: 48px; }

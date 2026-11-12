@@ -16,6 +16,8 @@ index.html        single-page site (all content lives here)
 css/style.css     styles, light/dark tokens, print styles
 js/fluid.js       LBM solver + renderer for the hero
 js/main.js        theme toggle, mobile nav, pixel-art icons
+js/projects.js    project-card detail dialog (click a card to open it)
+js/fourier.js     live Fourier-descriptor demo inside the eyewear-frame project card
 assets/           favicon, Pip the mail bird, resume PDF, self-hosted fonts (SIL OFL)
 tests/unit/       solver checks: stability, vortex shedding, Nusselt number, cylinder placement
 tests/e2e/        Playwright rendering checks at desktop / laptop / phone sizes
