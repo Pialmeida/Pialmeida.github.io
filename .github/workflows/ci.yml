@@ -18,7 +18,8 @@ concurrency:
 jobs:
   test:
     name: Lint, physics & rendering tests
-    runs-on: ubuntu-latest
+    # Pinned: Playwright 1.55 ships browsers for Ubuntu 24.04, not 26.04 (ubuntu-latest).
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
