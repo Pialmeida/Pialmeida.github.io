@@ -16,20 +16,39 @@ index.html        single-page site (all content lives here)
 css/style.css     styles, light/dark tokens, print styles
 js/fluid.js       LBM solver + renderer for the hero
 js/main.js        theme toggle, mobile nav, pixel-art icons
-assets/           favicon, Pip the mail bird, (optional) resume PDF
+assets/           favicon, Pip the mail bird, resume PDF, self-hosted fonts (SIL OFL)
+tests/unit/       solver checks: stability, vortex shedding, Nusselt number, cylinder placement
+tests/e2e/        Playwright rendering checks at desktop / laptop / phone sizes
+tests/serve.js    tiny static server used by the tests
 ```
 
 ## Run locally
 
 ```bash
-python3 -m http.server 8000   # then open http://localhost:8000
+npm run serve                 # http://127.0.0.1:4173
 ```
+
+## Tests
+
+```bash
+npm ci && npx playwright install chromium   # once
+npm test                                    # lint + solver tests + browser rendering tests
+```
+
+The browser tests fail on console errors, broken links or assets, horizontal scrolling, fonts
+that don't load, text under 12px, captions overlapping the hero text, a frozen or blank
+simulation, and serious accessibility (axe) violations in light and dark themes. Full-page
+screenshots land in `test-results/screenshots/`.
+
+A pre-push hook runs `npm test` before any push to `main` (enable with
+`git config core.hooksPath .githooks`).
 
 ## Deploy (GitHub Pages)
 
-1. Create a repo named `Pialmeida.github.io` (serves at `https://pialmeida.github.io/`).
-2. `git remote add origin git@github.com:Pialmeida/Pialmeida.github.io.git && git push -u origin main`
-3. Repo **Settings → Pages → Source: Deploy from a branch → `main` / root**.
+`.github/workflows/ci.yml` runs every check on pull requests and on pushes to `main`.
+It deploys to https://pialmeida.github.io/ **only after the tests pass**, so a broken
+change never goes live. Pages source must be set to **GitHub Actions**
+(Settings → Pages → Source). Each run uploads screenshots as an artifact.
 
 ## Editing content
 

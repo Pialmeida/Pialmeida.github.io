@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -10,9 +10,10 @@
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#0b1220">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Silkscreen&display=swap" rel="stylesheet">
+  <link rel="preload" href="assets/fonts/silkscreen-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="assets/fonts/inter-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="stylesheet" href="css/style.css">
   <script>
     // Apply saved theme before paint to avoid a flash.
@@ -25,7 +26,7 @@
   <header class="site-header">
     <nav class="nav container" aria-label="Primary">
       <a class="brand" href="#top" aria-label="Home">P<span>I</span>A</a>
-      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
         <span></span><span></span><span></span>
       </button>
       <ul class="nav-links" id="nav-links">
@@ -90,8 +91,8 @@
             <p>
               What ties it together is the part of engineering I enjoy most: taking a messy problem, finding the
               right abstraction, and building the tool that answers it, whether that's a crash-tolerant downloader
-              for terabytes of DNS data, a C++ bridge between a CFD solver and an RL library, or a Rust game-tree
-              search for a side project.
+              for terabytes of DNS data, a C++ bridge between a CFD solver and an RL library, or a self-play
+              reinforcement-learning agent for a side project.
             </p>
             <p class="availability"><span class="dot" aria-hidden="true"></span>
               Open to full-time ML, data science, CFD, and thermal engineering roles starting spring 2027.</p>
@@ -113,7 +114,7 @@
           </div>
           <div class="skill-group">
             <h3 class="pixel">Languages</h3>
-            <ul class="chips"><li>Python</li><li>C++</li><li>C</li><li>Rust</li><li>SQL</li><li>MATLAB</li><li>Bash</li></ul>
+            <ul class="chips"><li>Python</li><li>C++</li><li>C</li><li>SQL</li><li>MATLAB</li><li>Bash</li></ul>
           </div>
           <div class="skill-group">
             <h3 class="pixel">Simulation &amp; HPC</h3>
@@ -235,11 +236,11 @@
               <h3>Self-play RL for competitive Pokémon</h3>
               <p>
                 Implemented R-NaD (the algorithm behind DeepMind's DeepNash) from the papers, with a PPO baseline,
-                a Transformer + GRU encoder, and a particle filter that infers hidden opponent information. A Rust
-                alpha-beta engine (via PyO3) bounds win probability under hidden information. Training runs on
+                a Transformer + GRU encoder, and a particle filter that infers hidden opponent information. An
+                alpha-beta search engine bounds win probability under hidden information. Training runs on
                 multi-node SLURM jobs past 1M self-play games per seed, backed by 1,800+ tests.
               </p>
-              <ul class="tags"><li>PyTorch</li><li>Rust</li><li>Game theory</li><li>HPC</li></ul>
+              <ul class="tags"><li>PyTorch</li><li>Game theory</li><li>HPC</li></ul>
             </div>
           </article>
 

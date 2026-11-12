@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Run the full test suite before anything is pushed to main.
+# Enable once per clone:  git config core.hooksPath .githooks
+# Skip in an emergency:   git push --no-verify
+set -euo pipefail
+while read -r _local_ref _local_sha remote_ref _remote_sha; do
+  if [[ "$remote_ref" == "refs/heads/main" ]]; then
+    echo "pre-push: running tests before pushing to main..."
+    [[ -d node_modules ]] || npm ci
+    npm test
+  fi
+done

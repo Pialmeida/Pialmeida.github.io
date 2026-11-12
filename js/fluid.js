@@ -42,6 +42,7 @@
   const T_BANDS = [0.05, 0.14, 0.3, 0.5, 0.72];
   const C_CYL = rgb('#e8e6df'), C_WALL = rgb('#3a4558'), C_HOT = rgb('#ff7a45');
 
+  let geom = { cx: 0, cy: 0, r: 0 };
   let W, H, N, D, f, f2, t, t2, ux, uy, T, solid, img, omega, omegaT, feqIn;
   let heatStart = 0, nu = 0, nuAvg = 0;
   let steps = 0, warmup = 0, running = !reduceMotion, visible = true;
@@ -82,6 +83,7 @@
       cx = Math.min(cx, Math.round(W * 0.8));
     }
     const cy = Math.round(H * 0.68) + 0.5;
+    geom = { cx, cy, r };
     heatStart = Math.max(1, cx - r);
     for (let y = 0; y < H; y++)
       for (let x = 0; x < W; x++)
@@ -119,7 +121,7 @@
         if (s) { ux[idx] = 0; uy[idx] = 0; T[idx] = s === HOT ? T_WALL : T[idx]; continue; }
 
         if (x === 0 || y === 0) {
-          // Inflow and top far-field: uniform, cold.
+          // Inflow (and top row, overwritten below): uniform, cold.
           for (let i = 0; i < 9; i++) f2[i * N + idx] = feqIn[i];
           for (let i = 0; i < 5; i++) t2[i * N + idx] = 0;
           ux[idx] = U0; uy[idx] = 0; T[idx] = 0;
@@ -168,6 +170,13 @@
           t2[k] += omegaT * (TWT[i] * temp * (1 + 3 * (TX[i] * u + TY[i] * v)) - t2[k]);
         }
       }
+    }
+    // Top edge: open (zero-gradient) boundary, so the blocked channel doesn't form a shear layer there.
+    for (let x = 1; x < W; x++) {
+      const idx = x, below = W + x;
+      for (let i = 0; i < 9; i++) f2[i * N + idx] = f2[i * N + below];
+      for (let i = 0; i < 5; i++) t2[i * N + idx] = t2[i * N + below];
+      ux[idx] = ux[below]; uy[idx] = uy[below]; T[idx] = T[below];
     }
     let swap = f; f = f2; f2 = swap;
     swap = t; t = t2; t2 = swap;
@@ -291,6 +300,16 @@
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(() => { if (init()) render(); }, 200);
   });
+
+  // Read-only hook for the automated tests (tests/). Inactive unless the page opts in.
+  if (window.__FLUID_DEBUG__) {
+    window.__FLUID_DEBUG__.sim = {
+      step, nusselt,
+      get W() { return W; }, get H() { return H; }, get steps() { return steps; },
+      get ux() { return ux; }, get uy() { return uy; }, get T() { return T; },
+      get geom() { return geom; }, get warmup() { return warmup; },
+    };
+  }
 
   if (init()) { render(); requestAnimationFrame(frame); }
 })();

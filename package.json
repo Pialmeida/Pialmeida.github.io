@@ -1,0 +1,18 @@
+{
+  "name": "pialmeida-portfolio",
+  "private": true,
+  "type": "module",
+  "description": "Personal portfolio site. Static HTML/CSS/JS; this package only holds the test tooling.",
+  "scripts": {
+    "serve": "node tests/serve.js",
+    "lint": "html-validate index.html 404.html && node --check js/fluid.js && node --check js/main.js",
+    "test:unit": "node --test tests/unit/*.test.js",
+    "test:e2e": "playwright test",
+    "test": "npm run lint && npm run test:unit && npm run test:e2e"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "4.10.2",
+    "@playwright/test": "1.55.0",
+    "html-validate": "9.7.1"
+  }
+}
