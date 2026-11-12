@@ -71,6 +71,22 @@ test('cylinder sheds vortices (wake velocity oscillates)', () => {
   assert.ok(signChanges >= 3, `expected periodic shedding, saw ${signChanges} sign changes`);
 });
 
+test('mean flow stays near the inflow speed over a long run (no slow momentum drift)', () => {
+  // The top and outflow boundaries are plain zero-gradient copies, which are weakly
+  // reflecting; without the sponge zone near those edges, momentum slowly leaks into the
+  // domain over a long run and the mean flow drifts well past U0, distorting the shedding
+  // before it eventually destabilizes outright.
+  const sim = loadSim({ width: 1440, height: 760 });
+  const meanUx = () => sim.ux.reduce((a, b) => a + b, 0) / sim.ux.length;
+  run(sim, 4000); // past the initial transient, into the periodic shedding regime
+  const early = meanUx();
+  run(sim, 8000);
+  const late = meanUx();
+  for (const m of [early, late])
+    assert.ok(Math.abs(m - sim.U0) < 0.015, `mean flow drifted from U0=${sim.U0}: ${m}`);
+  assert.ok(Math.abs(late - early) < 0.01, `mean flow still drifting: ${early} -> ${late}`);
+});
+
 test('heated plate gives a plausible Nusselt number', () => {
   const sim = loadSim({ width: 1440, height: 760 });
   run(sim, 5000);

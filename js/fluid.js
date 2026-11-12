@@ -33,6 +33,7 @@
   const T_WALL = 1;  // heated plate; inflow is T = 0
 
   const CYL = 1, WALL = 2, HOT = 3;   // solid cell types
+  const SPONGE_X = 10, SPONGE_Y = 6, SPONGE_STRENGTH = 0.08; // absorbing zone near top/outflow
 
   const rgb = hex => [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16));
   const BG = rgb('#0b1220');
@@ -168,6 +169,20 @@
         for (let i = 0; i < 5; i++) {
           const k = i * N + idx;
           t2[k] += omegaT * (TWT[i] * temp * (1 + 3 * (TX[i] * u + TY[i] * v)) - t2[k]);
+        }
+
+        // Sponge: the top and outflow edges above are plain zero-gradient copies, which are
+        // weakly reflecting. Over a very long run that slowly pumps momentum into the domain
+        // (mean flow drifting well past U0) and distorts the shedding before it eventually
+        // destabilizes. Gently relax cells near those edges back toward the inflow state.
+        let sigma = 0;
+        const distR = W - 1 - x, distT = y;
+        if (distR < SPONGE_X) sigma = (SPONGE_X - distR) / SPONGE_X;
+        if (distT < SPONGE_Y) sigma = Math.max(sigma, (SPONGE_Y - distT) / SPONGE_Y);
+        if (sigma > 0) {
+          const blend = sigma * sigma * SPONGE_STRENGTH;
+          for (let i = 0; i < 9; i++) { const k = i * N + idx; f2[k] += blend * (feqIn[i] - f2[k]); }
+          for (let i = 0; i < 5; i++) { const k = i * N + idx; t2[k] += blend * (0 - t2[k]); }
         }
       }
     }
@@ -329,7 +344,7 @@
       step, nusselt,
       get W() { return W; }, get H() { return H; }, get steps() { return steps; },
       get ux() { return ux; }, get uy() { return uy; }, get T() { return T; },
-      get geom() { return geom; }, get warmup() { return warmup; },
+      get geom() { return geom; }, get warmup() { return warmup; }, get U0() { return U0; },
     };
   }
 
