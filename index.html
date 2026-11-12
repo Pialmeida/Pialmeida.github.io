@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedro Ivo Almeida — ML Engineer &amp; CFD Researcher</title>
+  <meta name="description" content="Pedro Ivo Almeida — PhD candidate at Florida Atlantic University working at the intersection of machine learning and computational fluid dynamics.">
+  <meta property="og:title" content="Pedro Ivo Almeida — ML Engineer & CFD Researcher">
+  <meta property="og:description" content="Deep reinforcement learning, turbulence simulation, and production ML.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Silkscreen&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <script>
+    // Apply saved theme before paint to avoid a flash.
+    try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="nav container" aria-label="Primary">
+      <a class="brand" href="#top" aria-label="Home">P<span>I</span>A</a>
+      <button class="nav-toggle" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#experience">Experience</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#research">Research</a></li>
+        <li><a href="#beyond">Beyond work</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <svg viewBox="0 0 8 8" aria-hidden="true" shape-rendering="crispEdges"><path d="M3 0h2v1H3zM1 1h2v1H1zM5 1h2v1H5zM0 3h1v2H0zM7 3h1v2H7zM1 6h2v1H1zM5 6h2v1H5zM3 7h2v1H3zM3 2h2v1H3zM2 3h4v2H2zM3 5h2v1H3z"/></svg>
+        </button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <canvas id="flow" aria-hidden="true"></canvas>
+      <div class="hero-scrim" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <p class="eyebrow pixel">&gt; PhD Candidate · Florida Atlantic University</p>
+        <h1>Pedro Ivo Almeida</h1>
+        <p class="hero-lede">
+          Machine learning engineer and computational fluid dynamicist. I build models that learn,
+          from deep reinforcement learning that cut cylinder drag by <strong>70%</strong> to
+          XGBoost classifiers running in production.
+        </p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#projects">View projects</a>
+          <a class="btn btn-ghost" href="#contact">Get in touch</a>
+          <!-- Add a resume PDF at assets/Pedro_Ivo_Almeida_Resume.pdf, then uncomment:
+          <a class="btn btn-ghost" href="assets/Pedro_Ivo_Almeida_Resume.pdf" target="_blank" rel="noopener">Resume (PDF)</a>
+          -->
+        </div>
+        <dl class="hero-stats">
+          <div><dt>70%</dt><dd>drag reduction with deep RL</dd></div>
+          <div><dt>800k+</dt><dd>CPU-hours of HPC simulation</dd></div>
+          <div><dt>6&nbsp;TB</dt><dd>turbulence data processed</dd></div>
+          <div><dt>0.83</dt><dd>ROC-AUC, production classifier</dd></div>
+        </dl>
+      </div>
+      <div class="flow-caption">
+        <span class="pixel" id="flow-hud">LBM D2Q9</span>
+        <span class="flow-hint">Live simulation: a cylinder's wake cooling a heated plate. Move your cursor to stir it.</span>
+        <button class="flow-toggle pixel" id="flow-toggle" type="button" aria-pressed="false">Pause</button>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container">
+        <p class="section-label pixel">01 · About</p>
+        <div class="about-grid">
+          <div class="about-text">
+            <h2>Physics meets data.</h2>
+            <p>
+              I'm finishing a PhD in Ocean Engineering (Applied Mathematics) at Florida Atlantic University,
+              where I study turbulence with direct numerical simulation and teach reinforcement-learning agents
+              to control fluid flow. Along the way I've shipped machine learning in industry, from an LLM-powered
+              text-to-SQL system to churn and claims classifiers scored every week.
+            </p>
+            <p>
+              What ties it together is the part of engineering I enjoy most: taking a messy problem, finding the
+              right abstraction, and building the tool that answers it, whether that's a crash-tolerant downloader
+              for terabytes of DNS data, a C++ bridge between a CFD solver and an RL library, or a Rust game-tree
+              search for a side project.
+            </p>
+            <p class="availability"><span class="dot" aria-hidden="true"></span>
+              Open to full-time ML, data science, CFD, and thermal engineering roles starting spring 2027.</p>
+          </div>
+          <aside class="facts" aria-label="Quick facts">
+            <dl>
+              <div><dt>Based in</dt><dd>South Florida · open to relocate</dd></div>
+              <div><dt>Education</dt><dd>PhD &amp; M.S. Ocean Engineering · B.S. Mechanical Engineering</dd></div>
+              <div><dt>Focus</dt><dd>Applied ML · CFD &amp; heat transfer · deep RL</dd></div>
+              <div><dt>Languages</dt><dd>English · Portuguese · Spanish (working)</dd></div>
+            </dl>
+          </aside>
+        </div>
+
+        <div class="skills">
+          <div class="skill-group">
+            <h3 class="pixel">Machine learning</h3>
+            <ul class="chips"><li>PyTorch</li><li>TensorFlow / Keras</li><li>XGBoost</li><li>scikit-learn</li><li>Deep RL</li><li>Transformers</li><li>CNNs</li><li>SHAP</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3 class="pixel">Languages</h3>
+            <ul class="chips"><li>Python</li><li>C++</li><li>C</li><li>Rust</li><li>SQL</li><li>MATLAB</li><li>Bash</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3 class="pixel">Simulation &amp; HPC</h3>
+            <ul class="chips"><li>OpenFOAM</li><li>Nek5000</li><li>DNS / LES</li><li>Heat transfer</li><li>SolidWorks</li><li>MPI</li><li>OpenMP</li><li>SLURM</li><li>ParaView</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3 class="pixel">Data &amp; tools</h3>
+            <ul class="chips"><li>Snowflake</li><li>Pandas / Polars</li><li>NumPy / SciPy</li><li>Docker</li><li>Git</li><li>OpenCV</li><li>LaTeX</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="section section-alt" id="experience">
+      <div class="container">
+        <p class="section-label pixel">02 · Experience</p>
+        <h2>Where I've worked</h2>
+        <ol class="timeline">
+          <li class="job">
+            <div class="job-head">
+              <h3>AI Engineer Intern <span class="org">· VSP Vision</span></h3>
+              <p class="meta">Feb 2026 – Aug 2026 · Remote</p>
+            </div>
+            <ul>
+              <li>Built an LLM-powered text-to-SQL system with Snowflake Semantic Views and Cortex Agents, cutting estimated ad-hoc SQL turnaround from days to minutes. Validated it with ~30 test users and 500+ questions; the frame sales team used the pilot to diagnose sales changes.</li>
+              <li>Lead developer on two XGBoost classifiers, scored weekly and retrained monthly: next out-of-network claim (ROC-AUC 0.83) and voluntary member churn (ROC-AUC 0.79).</li>
+              <li>Designed the deployment steps of a Snowflake-native CI/CD pipeline, now planned as the team standard for future models.</li>
+            </ul>
+            <ul class="tags"><li>Snowflake</li><li>LLMs</li><li>XGBoost</li><li>CI/CD</li></ul>
+          </li>
+          <li class="job">
+            <div class="job-head">
+              <h3>Graduate Research Assistant <span class="org">· Florida Atlantic University</span></h3>
+              <p class="meta">Aug 2021 – Present · Dania Beach, FL</p>
+            </div>
+            <ul>
+              <li>Ran OpenFOAM and Nek5000 simulations on the FAU Athene cluster with SLURM, using over 800,000 CPU-hours.</li>
+              <li>Collaborated with a Technion group on deep reinforcement learning for flow control, including a research visit in 2023.</li>
+              <li>Presented results at APS-DFD (2023–2026) and the European Turbulence Conference (2023).</li>
+            </ul>
+            <ul class="tags"><li>CFD</li><li>Deep RL</li><li>HPC</li><li>C++</li></ul>
+          </li>
+          <li class="job">
+            <div class="job-head">
+              <h3>AI Engineer Intern <span class="org">· Innovation Lab, Troya / AKAER</span></h3>
+              <p class="meta">Aug 2020 – May 2021 · São José dos Campos, Brazil</p>
+            </div>
+            <ul>
+              <li>Built a Python/Qt5 inventory system with dashboards, saving an estimated $20,000 per year on spare parts and repeat purchases.</li>
+              <li>Prototyped employee identification on a Raspberry Pi 4 and live-video car counting with a MobileNet detector.</li>
+            </ul>
+            <ul class="tags"><li>Python</li><li>Computer vision</li><li>Embedded</li></ul>
+          </li>
+          <li class="job">
+            <div class="job-head">
+              <h3>Research Assistant <span class="org">· Max Planck Florida Institute for Neuroscience</span></h3>
+              <p class="meta">Aug 2019 – May 2020 · Jupiter, FL</p>
+            </div>
+            <ul>
+              <li>Trained a CNN to classify neuronal firing mechanisms from electron-microscopy data, and built the preprocessing pipeline for the high-resolution imagery.</li>
+            </ul>
+            <ul class="tags"><li>CNNs</li><li>Imaging</li></ul>
+          </li>
+          <li class="job">
+            <div class="job-head">
+              <h3>Co-founder &amp; COO <span class="org">· Althea (nonprofit)</span></h3>
+              <p class="meta">Sep 2020 – Present</p>
+            </div>
+            <ul>
+              <li>Co-founded a nonprofit helping low-income communities navigate Medicaid/Medicare and access prosthetic care. Built its website and led fundraising of $5,000+ for direct medical assistance.</li>
+            </ul>
+            <ul class="tags"><li>Leadership</li><li>Operations</li></ul>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+      <div class="container">
+        <p class="section-label pixel">03 · Projects</p>
+        <h2>Selected work</h2>
+        <div class="projects">
+          <article class="project featured">
+            <div class="project-art" data-pixel="cylinder" aria-hidden="true"></div>
+            <div class="project-body">
+              <p class="project-kicker pixel">Research · 2021–2024</p>
+              <h3>Flow control with deep reinforcement learning</h3>
+              <p>
+                Coupled an OpenFOAM large-eddy simulation to the <em>smarties</em> RL library in C++, running
+                4 parallel simulations on 128 MPI ranks each. An off-policy agent (ReF-ER) reading 16 surface-pressure
+                sensors learned to drive 4 rotating actuators and <strong>reduced cylinder drag by 70%</strong>, and the
+                surface-pressure analysis identified the mechanism behind the separation control.
+              </p>
+              <p class="aside-note">The simulation at the top of this page is a tiny, browser-sized cousin of this setup, with a heated plate added: lattice-Boltzmann flow plus a thermal lattice for temperature, reporting a live wall Nusselt number.</p>
+              <ul class="tags"><li>C++</li><li>OpenFOAM</li><li>Deep RL</li><li>MPI</li></ul>
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-art" data-pixel="wave" aria-hidden="true"></div>
+            <div class="project-body">
+              <p class="project-kicker pixel">Research · 2024–present</p>
+              <h3>Wall-pressure extrema in wall-bounded turbulence</h3>
+              <p>
+                Built a parallel, crash-tolerant downloader and MATLAB/Python pipeline to process 6+&nbsp;TB of JHTDB data,
+                ran DNS of turbulent pipe flow with Nek5000, and characterized the shape, orientation, and dynamics of
+                50,000+ pressure extrema per case across channel, pipe, and boundary-layer flows.
+              </p>
+              <ul class="tags"><li>Nek5000</li><li>Python</li><li>MATLAB</li><li>DNS</li></ul>
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-art" data-pixel="tree" aria-hidden="true"></div>
+            <div class="project-body">
+              <p class="project-kicker pixel">Personal · 2026–present</p>
+              <h3>Self-play RL for competitive Pokémon</h3>
+              <p>
+                Implemented R-NaD (the algorithm behind DeepMind's DeepNash) from the papers, with a PPO baseline,
+                a Transformer + GRU encoder, and a particle filter that infers hidden opponent information. A Rust
+                alpha-beta engine (via PyO3) bounds win probability under hidden information. Training runs on
+                multi-node SLURM jobs past 1M self-play games per seed, backed by 1,800+ tests.
+              </p>
+              <ul class="tags"><li>PyTorch</li><li>Rust</li><li>Game theory</li><li>HPC</li></ul>
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-art" data-pixel="cells" aria-hidden="true"></div>
+            <div class="project-body">
+              <p class="project-kicker pixel">Deep learning · 2021</p>
+              <h3>Breast cancer histopathology classifier</h3>
+              <p>
+                Detected invasive ductal carcinoma in ~277,000 histopathology patches with 92% held-out accuracy,
+                using a custom CNN with an Inception-style multi-scale module and data augmentation.
+              </p>
+              <ul class="tags"><li>TensorFlow</li><li>CNNs</li><li>Computer vision</li></ul>
+            </div>
+          </article>
+
+          <article class="project">
+            <div class="project-art" data-pixel="chip" aria-hidden="true"></div>
+            <div class="project-body">
+              <p class="project-kicker pixel">Engineering · 2020–2021</p>
+              <h3>Mechatronic capstone device</h3>
+              <p>
+                Lead software and electrical engineer for the senior design team: motors and drivers, sensors,
+                Bluetooth communication, and custom boards, integrated with the mechanical subteam.
+              </p>
+              <ul class="tags"><li>Embedded</li><li>Electronics</li><li>Teamwork</li></ul>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESEARCH -->
+    <section class="section section-alt" id="research">
+      <div class="container">
+        <p class="section-label pixel">04 · Research</p>
+        <h2>Publications &amp; talks</h2>
+        <div class="research-grid">
+          <div>
+            <h3 class="sub">Manuscript</h3>
+            <ul class="pubs">
+              <li><strong>Ivo Almeida, P.</strong>, Verma, S. “Spatial and Temporal Characteristics of Wall-Pressure Extrema in Turbulent Channel Flows.” <em>In preparation.</em></li>
+            </ul>
+            <h3 class="sub">Conference presentations</h3>
+            <ul class="pubs">
+              <li><strong>Ivo Almeida, P.</strong>, Verma, S. “Morphology and alignment of surface pressure extrema in wall-bounded turbulence.” <em>APS-DFD</em>, Orlando, FL, 2026.</li>
+              <li><strong>Ivo Almeida, P.</strong>, Sharma, M., Verma, S. “Morphology and Dynamics of Wall-Pressure Extrema in Wall-Bounded Turbulence.” <em>APS-DFD</em>, Houston, TX, 2025.</li>
+              <li><strong>Ivo Almeida, P.</strong>, Sharma, M., Verma, S. “Exploring Surface Pressure Fluctuations in DNS of Turbulent Channel Flow.” <em>APS-DFD</em>, Salt Lake City, UT, 2024.</li>
+              <li><strong>Ivo Almeida, P.</strong>, Jacobi, I., Cukurel, B., Verma, S. “Distributed Actuation of Turbulent Flow Around a Cylinder using Deep Reinforcement Learning.” <em>APS-DFD</em>, Washington, D.C., 2023 · <em>European Turbulence Conference</em>, Valencia, Spain, 2023.</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="sub">Honors</h3>
+            <ul class="badges">
+              <li><span class="badge-icon" data-pixel="trophy" aria-hidden="true"></span><div><strong>Graduate Student of the Year</strong><span>FAU Broward · 2023–2024</span></div></li>
+              <li><span class="badge-icon" data-pixel="star" aria-hidden="true"></span><div><strong>National Merit Scholar Finalist</strong><span>2020</span></div></li>
+              <li><span class="badge-icon" data-pixel="scroll" aria-hidden="true"></span><div><strong>Dean's List</strong><span>2017–2024</span></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEYOND WORK -->
+    <section class="section" id="beyond">
+      <div class="container">
+        <p class="section-label pixel">05 · Beyond work</p>
+        <h2>Off the clock</h2>
+        <div class="hobbies">
+          <article class="hobby">
+            <div class="hobby-icon" data-pixel="mountain" aria-hidden="true"></div>
+            <h3>Rock climbing</h3>
+            <p>Bouldering is an optimization problem with chalk: read the route, test a hypothesis, fall, iterate.</p>
+          </article>
+          <article class="hobby">
+            <div class="hobby-icon" data-pixel="ball" aria-hidden="true"></div>
+            <h3>Volleyball &amp; footvolley</h3>
+            <p>Indoor and on the beach. Footvolley is the Brazilian mix of beach volleyball and soccer: no hands allowed.</p>
+          </article>
+          <article class="hobby">
+            <div class="hobby-icon" data-pixel="d20" aria-hidden="true"></div>
+            <h3>Dungeons &amp; Dragons</h3>
+            <p>Collaborative storytelling with probability theory built in. Still waiting on a natural 20 when it matters.</p>
+          </article>
+          <article class="hobby">
+            <div class="hobby-icon" data-pixel="pad" aria-hidden="true"></div>
+            <h3>Video games</h3>
+            <p>Pokémon (enough to build an RL agent for it), Minecraft, Counter-Strike, Rocket League, and Risk of Rain 2.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section section-alt contact" id="contact">
+      <div class="container contact-inner">
+        <img class="pip" src="assets/pip.gif" alt="" width="160" height="160" loading="lazy">
+        <div>
+          <p class="section-label pixel">06 · Contact</p>
+          <h2>Let's talk.</h2>
+          <p class="contact-lede">
+            Hiring for ML, data science, CFD, or thermal roles, or just want to talk turbulence, RL, or games?
+            My inbox is open.
+          </p>
+          <div class="contact-links">
+            <a class="btn btn-primary" href="mailto:almeida.pedro.ivo@gmail.com">almeida.pedro.ivo@gmail.com</a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/pedroivoalmeida" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn btn-ghost" href="https://github.com/Pialmeida" target="_blank" rel="noopener">GitHub</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year">2026</span> Pedro Ivo Almeida · Hand-built with HTML, CSS &amp; a small lattice-Boltzmann solver.</p>
+      <a href="#top" class="pixel back-top">↑ Top</a>
+    </div>
+  </footer>
+
+  <script src="js/main.js" defer></script>
+  <script src="js/fluid.js" defer></script>
+</body>
+</html>
