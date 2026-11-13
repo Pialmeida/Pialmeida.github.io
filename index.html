@@ -9,6 +9,10 @@
   <meta property="og:description" content="Wall-bounded turbulence, direct numerical simulation, and deep reinforcement learning for active flow control.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#0b1220">
+  <link rel="canonical" href="https://pialmeida.github.io/">
+  <link rel="alternate" hreflang="en" href="https://pialmeida.github.io/">
+  <link rel="alternate" hreflang="pt-BR" href="https://pialmeida.github.io/pt/">
+  <link rel="alternate" hreflang="x-default" href="https://pialmeida.github.io/">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preload" href="assets/fonts/silkscreen-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
   <link rel="preload" href="assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
@@ -18,6 +22,19 @@
   <script>
     // Apply saved theme before paint to avoid a flash.
     try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <script>
+    // Browser prefers Portuguese and hasn't been overridden via the PT/EN toggle: send
+    // first-time (and repeat) visitors straight to the Portuguese version. A manual
+    // toggle click is sticky (stored in localStorage) and always wins over this check.
+    try {
+      var sitePref = localStorage.getItem('site-lang');
+      if (sitePref === 'pt') { location.replace('/pt/' + location.hash); }
+      else if (!sitePref && navigator.language && navigator.language.toLowerCase().indexOf('pt') === 0) {
+        localStorage.setItem('site-lang', 'pt');
+        location.replace('/pt/' + location.hash);
+      }
+    } catch (e) {}
   </script>
 </head>
 <body>
@@ -36,6 +53,7 @@
         <li><a href="#research">Research</a></li>
         <li><a href="#beyond">Beyond work</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><button class="lang-toggle pixel" type="button" aria-label="Switch to Portuguese" onclick="try{localStorage.setItem('site-lang','pt')}catch(e){}location.href='/pt/'">PT</button></li>
         <li><button class="theme-toggle" type="button" aria-label="Toggle dark mode">
           <svg viewBox="0 0 8 8" aria-hidden="true" shape-rendering="crispEdges"><path d="M3 0h2v1H3zM1 1h2v1H1zM5 1h2v1H5zM0 3h1v2H0zM7 3h1v2H7zM1 6h2v1H1zM5 6h2v1H5zM3 7h2v1H3zM3 2h2v1H3zM2 3h4v2H2zM3 5h2v1H3z"/></svg>
         </button></li>

@@ -311,8 +311,9 @@
   hero.addEventListener('pointerleave', () => { pointer.active = false; pointer.has = false; });
 
   if (toggle) {
+    const isPt = document.documentElement.lang.toLowerCase().startsWith('pt');
     const sync = () => {
-      toggle.textContent = running ? 'Pause' : 'Play';
+      toggle.textContent = isPt ? (running ? 'Pausar' : 'Reproduzir') : (running ? 'Pause' : 'Play');
       toggle.setAttribute('aria-pressed', String(!running));
     };
     toggle.addEventListener('click', () => { running = !running; sync(); });

@@ -136,6 +136,8 @@ window.FourierDemo = (() => {
     return v || fallback;
   }
 
+  const isPt = () => document.documentElement.lang.toLowerCase().startsWith('pt');
+
   function init(root) {
     const slider = root.querySelector('[data-role="slider"]');
     const countOut = root.querySelector('[data-role="count"]');
@@ -162,7 +164,7 @@ window.FourierDemo = (() => {
       drawOutline(lensReconC, reconstruct(lensCoeffs, Number(slider.value)), accent);
     }
     function renderDrawRecon() {
-      if (!drawnCoeffs) { drawHint(drawReconC, 'Draw a shape on the left', muted); return; }
+      if (!drawnCoeffs) { drawHint(drawReconC, isPt() ? 'Desenhe uma forma à esquerda' : 'Draw a shape on the left', muted); return; }
       drawOutline(drawReconC, reconstruct(drawnCoeffs, Number(slider.value)), accent);
     }
     function renderAll() {
@@ -184,7 +186,7 @@ window.FourierDemo = (() => {
       ];
     }
     function redrawRaw() {
-      if (drawingRaw.length < 2) { drawHint(drawC, 'Click and drag to draw', muted); return; }
+      if (drawingRaw.length < 2) { drawHint(drawC, isPt() ? 'Clique e arraste para desenhar' : 'Click and drag to draw', muted); return; }
       const ctx = drawC.getContext('2d');
       ctx.clearRect(0, 0, drawC.width, drawC.height);
       ctx.beginPath();

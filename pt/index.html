@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pedro Ivo Almeida — Engenheiro de CFD e IA</title>
+  <meta name="description" content="Pedro Ivo Almeida — Candidato a PhD na Florida Atlantic University, estudando turbulência de parede com Simulação Numérica Direta e controle ativo de escoamento com aprendizado por reforço profundo.">
+  <meta property="og:title" content="Pedro Ivo Almeida — Engenheiro de CFD e IA">
+  <meta property="og:description" content="Turbulência de parede, simulação numérica direta e aprendizado por reforço profundo para controle ativo de escoamento.">
+  <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0b1220">
+  <link rel="canonical" href="https://pialmeida.github.io/pt/">
+  <link rel="alternate" hreflang="en" href="https://pialmeida.github.io/">
+  <link rel="alternate" hreflang="pt-BR" href="https://pialmeida.github.io/pt/">
+  <link rel="alternate" hreflang="x-default" href="https://pialmeida.github.io/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="preload" href="/assets/fonts/silkscreen-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/inter-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/inter-latin-600-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="/assets/fonts/inter-latin-700-normal.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="/css/style.css">
+  <script>
+    // Apply saved theme before paint to avoid a flash.
+    try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+  <script>
+    // Only bounce back to English if the visitor explicitly chose it via the EN/PT
+    // toggle. A direct visit to /pt/ (e.g. a shared link) is always respected,
+    // regardless of the browser's language setting.
+    try {
+      if (localStorage.getItem('site-lang') === 'en') { location.replace('/' + location.hash); }
+    } catch (e) {}
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+  <header class="site-header">
+    <nav class="nav container" aria-label="Principal">
+      <a class="brand" href="#top" aria-label="Início">P<span>I</span>A</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="#about">Sobre</a></li>
+        <li><a href="#experience">Experiência</a></li>
+        <li><a href="#projects">Projetos</a></li>
+        <li><a href="#research">Pesquisa</a></li>
+        <li><a href="#beyond">Além do trabalho</a></li>
+        <li><a href="#contact">Contato</a></li>
+        <li><button class="lang-toggle pixel" type="button" aria-label="Switch to English" onclick="try{localStorage.setItem('site-lang','en')}catch(e){}location.href='/'">EN</button></li>
+        <li><button class="theme-toggle" type="button" aria-label="Alternar modo escuro">
+          <svg viewBox="0 0 8 8" aria-hidden="true" shape-rendering="crispEdges"><path d="M3 0h2v1H3zM1 1h2v1H1zM5 1h2v1H5zM0 3h1v2H0zM7 3h1v2H7zM1 6h2v1H1zM5 6h2v1H5zM3 7h2v1H3zM3 2h2v1H3zM2 3h4v2H2zM3 5h2v1H3z"/></svg>
+        </button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <canvas id="flow" aria-hidden="true"></canvas>
+      <div class="hero-scrim" aria-hidden="true"></div>
+      <div class="container hero-inner">
+        <p class="eyebrow pixel">&gt; Doutorando · Florida Atlantic University</p>
+        <h1>Pedro Ivo Almeida</h1>
+        <p class="hero-lede">
+          Engenheiro de CFD e IA com mais de 5 anos de experiência estudando turbulência de parede com
+          Simulação Numérica Direta e controle ativo de escoamento com aprendizado por reforço profundo.
+        </p>
+        <p class="hero-fun aside-note">Trago esse mesmo rigor e curiosidade para os meus hobbies também.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#projects">Ver projetos</a>
+          <a class="btn btn-ghost" href="#contact">Entrar em contato</a>
+          <a class="btn btn-ghost" href="/assets/Pedro_Ivo_Almeida_Resume.pdf" target="_blank" rel="noopener">Currículo (PDF)</a>
+        </div>
+        <dl class="hero-stats">
+          <div><dt>5+&nbsp;anos</dt><dd>pesquisa em CFD / DNS-LES</dd></div>
+          <div><dt>800k+</dt><dd>horas de CPU em simulação HPC</dd></div>
+          <div><dt>~$500K+</dt><dd>impacto anual de custo, modelos de ML em produção</dd></div>
+          <div><dt>5</dt><dd>apresentações em conferências (APS-DFD, ETC)</dd></div>
+        </dl>
+      </div>
+      <div class="flow-caption">
+        <span class="pixel" id="flow-hud">LBM D2Q9</span>
+        <span class="flow-hint">Simulação em tempo real: a esteira de um cilindro resfriando uma placa aquecida. Mova o cursor para agitar o escoamento.</span>
+        <button class="flow-toggle pixel" id="flow-toggle" type="button" aria-pressed="false">Pausar</button>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section class="section" id="about">
+      <div class="container">
+        <p class="section-label pixel">01 · Sobre</p>
+        <div class="about-grid">
+          <div class="about-text">
+            <h2>Física encontra dados.</h2>
+            <p>
+              Estou concluindo um doutorado em Engenharia Oceânica (Matemática Aplicada) na Florida Atlantic
+              University, onde estudo turbulência com simulação numérica direta e ensino agentes de aprendizado
+              por reforço a controlar o escoamento de fluidos. Ao longo do caminho, também levei machine learning
+              para a indústria, de um sistema de texto-para-SQL baseado em LLM a classificadores de churn e
+              sinistros avaliados semanalmente.
+            </p>
+            <p>
+              O que conecta tudo isso é a parte da engenharia que mais gosto: pegar um problema confuso, encontrar
+              a abstração certa e construir a ferramenta que o resolve — seja um downloader tolerante a falhas
+              para terabytes de dados de DNS, uma ponte em C++ entre um solver de CFD e uma biblioteca de RL, ou
+              um agente de aprendizado por reforço com self-play para um projeto pessoal.
+            </p>
+            <p class="availability"><span class="dot" aria-hidden="true"></span>
+              Em busca de posições em tempo integral em ML, ciência de dados, CFD e engenharia térmica a partir do primeiro semestre de 2027.</p>
+          </div>
+          <aside class="facts" aria-label="Informações rápidas">
+            <dl>
+              <div><dt>Localização</dt><dd>Sul da Flórida · aberto a mudança</dd></div>
+              <div><dt>Formação</dt><dd>Doutorado e Mestrado em Engenharia Oceânica · Bacharelado em Engenharia Mecânica · Certificados de Pós-graduação em IA e Engenharia Aeroespacial</dd></div>
+              <div><dt>Foco</dt><dd>ML aplicado · CFD e transferência de calor · RL profundo</dd></div>
+              <div><dt>Idiomas</dt><dd>Inglês · Português · Espanhol (intermediário)</dd></div>
+            </dl>
+          </aside>
+        </div>
+
+        <div class="skills">
+          <div class="skill-group">
+            <h3 class="pixel">Machine learning</h3>
+            <ul class="chips"><li>PyTorch</li><li>TensorFlow / Keras</li><li>XGBoost</li><li>scikit-learn</li><li>Deep RL</li><li>Transformers</li><li>CNNs</li><li>SHAP</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3 class="pixel">Linguagens</h3>
+            <ul class="chips"><li>Python</li><li>C++</li><li>C</li><li>SQL</li><li>MATLAB</li><li>Bash</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3 class="pixel">Simulação &amp; HPC</h3>
+            <ul class="chips"><li>OpenFOAM</li><li>Nek5000</li><li>DNS / LES</li><li>Transferência de calor</li><li>SolidWorks</li><li>MPI</li><li>OpenMP</li><li>SLURM</li><li>ParaView</li></ul>
+          </div>
+          <div class="skill-group">
+            <h3 class="pixel">Dados &amp; ferramentas</h3>
+            <ul class="chips"><li>Snowflake</li><li>Pandas / Polars</li><li>NumPy / SciPy</li><li>Docker</li><li>Git</li><li>OpenCV</li><li>LaTeX</li></ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXPERIENCE -->
+    <section class="section section-alt" id="experience">
+      <div class="container">
+        <p class="section-label pixel">02 · Experiência</p>
+        <h2>Onde já trabalhei</h2>
+        <ol class="timeline">
+          <li class="job">
+            <div class="job-head">
+              <h3>Estagiário de Engenharia de IA <span class="org">· VSP Vision</span></h3>
+              <p class="meta">Fev 2026 – Ago 2026 · Remoto</p>
+            </div>
+            <ul>
+              <li>Desenvolvi um sistema de texto-para-SQL baseado em LLM com Snowflake Semantic Views e Cortex Agents, reduzindo o tempo estimado de consultas SQL ad-hoc de dias para minutos. Validado com cerca de 30 usuários de teste e mais de 500 perguntas; a equipe de vendas de armações usou o piloto para diagnosticar variações de vendas.</li>
+              <li>Desenvolvedor líder de dois classificadores XGBoost, avaliados semanalmente e retreinados mensalmente: previsão de sinistro fora da rede (ROC-AUC 0,83) e churn voluntário de membros (ROC-AUC 0,79).</li>
+              <li>Projetei as etapas de deploy de um pipeline de CI/CD nativo em Snowflake, hoje planejado como padrão da equipe para futuros modelos.</li>
+            </ul>
+            <ul class="tags"><li>Snowflake</li><li>LLMs</li><li>XGBoost</li><li>CI/CD</li></ul>
+          </li>
+          <li class="job">
+            <div class="job-head">
+              <h3>Assistente de Pesquisa de Pós-graduação <span class="org">· Florida Atlantic University</span></h3>
+              <p class="meta">Ago 2021 – Presente · Dania Beach, FL</p>
+            </div>
+            <ul>
+              <li>Executei simulações em OpenFOAM e Nek5000 no cluster Athene da FAU com SLURM, totalizando mais de 800.000 horas de CPU.</li>
+              <li>Colaborei com um grupo do Technion em aprendizado por reforço profundo para controle de escoamento, incluindo uma visita de pesquisa em 2023.</li>
+              <li>Apresentei resultados na APS-DFD (2023–2026) e na European Turbulence Conference (2023).</li>
+            </ul>
+            <ul class="tags"><li>CFD</li><li>Deep RL</li><li>HPC</li><li>C++</li></ul>
+          </li>
+          <li class="job">
+            <div class="job-head">
+              <h3>Estagiário de Engenharia de IA <span class="org">· Innovation Lab, Troya / AKAER</span></h3>
+              <p class="meta">Ago 2020 – Mai 2021 · São José dos Campos, Brasil</p>
+            </div>
+            <ul>
+              <li>Desenvolvi um sistema de inventário em Python/Qt5 com dashboards, com economia estimada de US$ 20.000 por ano em peças de reposição e compras repetidas.</li>
+              <li>Prototipei identificação de funcionários em um Raspberry Pi 4 e contagem de veículos em vídeo em tempo real com um detector MobileNet.</li>
+            </ul>
+            <ul class="tags"><li>Python</li><li>Visão computacional</li><li>Sistemas embarcados</li></ul>
+          </li>
+          <li class="job">
+            <div class="job-head">
+              <h3>Assistente de Pesquisa <span class="org">· Max Planck Florida Institute for Neuroscience</span></h3>
+              <p class="meta">Ago 2019 – Mai 2020 · Jupiter, FL</p>
+            </div>
+            <ul>
+              <li>Treinei uma CNN para classificar mecanismos de disparo neuronal a partir de dados de microscopia eletrônica, e construí o pipeline de pré-processamento para as imagens de alta resolução.</li>
+            </ul>
+            <ul class="tags"><li>CNNs</li><li>Processamento de imagem</li></ul>
+          </li>
+          <li class="job">
+            <div class="job-head">
+              <h3>Cofundador &amp; COO <span class="org">· Althea (ONG)</span></h3>
+              <p class="meta">Set 2020 – Presente</p>
+            </div>
+            <ul>
+              <li>Cofundei uma ONG que ajuda comunidades de baixa renda a navegar o Medicaid/Medicare e a acessar cuidados com próteses. Construí o site da organização e liderei a captação de mais de US$ 5.000 em recursos para assistência médica direta.</li>
+            </ul>
+            <ul class="tags"><li>Liderança</li><li>Operações</li></ul>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+      <div class="container">
+        <p class="section-label pixel">03 · Projetos</p>
+        <h2>Trabalhos selecionados</h2>
+        <div class="projects">
+          <article class="project featured" data-project="rl-flow-control">
+            <div class="project-art" data-pixel="cylinder" aria-hidden="true"></div>
+            <div class="project-body">
+              <p class="project-kicker pixel">Pesquisa · 2021–2024</p>
+              <h3>Controle de escoamento com aprendizado por reforço profundo</h3>
+              <ul class="project-summary">
+                <li>LES no OpenFOAM acoplado a uma biblioteca de RL em C++, executando 128 processos MPI por simulação</li>
+                <li>Agente de RL off-policy reduziu o arrasto do cilindro em 70%</li>
+                <li>Análise de pressão na superfície identificou o mecanismo de controle da separação</li>
+              </ul>
+              <p>
+                Acoplei uma simulação de grandes escalas (LES) no OpenFOAM à biblioteca de RL <em>smarties</em> em
+                C++, executando 4 simulações paralelas com 128 processos MPI cada. Um agente off-policy (ReF-ER),
+                lendo 16 sensores de pressão na superfície, aprendeu a controlar 4 atuadores rotativos e
+                <strong>reduziu o arrasto do cilindro em 70%</strong>, e a análise de pressão na superfície
+                identificou o mecanismo por trás do controle de separação.
+              </p>
+              <p class="aside-note">A simulação no topo desta página é uma versão minúscula, do tamanho do navegador, dessa mesma configuração, com uma placa aquecida adicionada: escoamento por lattice-Boltzmann mais uma rede térmica para a temperatura, reportando um número de Nusselt de parede em tempo real.</p>
+              <ul class="tags"><li>C++</li><li>OpenFOAM</li><li>Deep RL</li><li>MPI</li></ul>
+              <button class="project-open" type="button">Ver detalhes →</button>
+            </div>
+          </article>
+
+          <article class="project" data-project="wall-pressure-extrema">
+            <div class="project-art" data-pixel="wave" aria-hidden="true"></div>
+            <div class="project-body">
+              <p class="project-kicker pixel">Pesquisa · 2024–presente</p>
+              <h3>Extremos de pressão de parede em turbulência de parede</h3>
+              <ul class="project-summary">
+                <li>DNS de escoamento turbulento em canal e tubo com Nek5000</li>
+                <li>Caracterizei forma, orientação e dinâmica de mais de 50.000 extremos de pressão de parede por caso</li>
+                <li>Encontrei padrões de morfologia e alinhamento ligados à estrutura da turbulência próxima à parede (manuscrito em preparação)</li>
+              </ul>
+              <p>
+                Executei DNS de escoamento turbulento em canal e tubo com Nek5000 e caracterizei forma, orientação
+                e dinâmica de mais de 50.000 extremos de pressão por caso, revelando padrões de morfologia e
+                alinhamento ligados à estrutura da turbulência próxima à parede (manuscrito em preparação).
+              </p>
+              <ul class="tags"><li>Nek5000</li><li>Python</li><li>MATLAB</li><li>DNS</li></ul>
+              <button class="project-open" type="button">Ver detalhes →</button>
+            </div>
+          </article>
+
+          <article class="project" data-project="fourier-fingerprint">
+            <div class="project-art" data-pixel="frames" aria-hidden="true"></div>
+            <div class="project-body">
+              <p class="project-kicker pixel">Visão computacional · 2026</p>
+              <h3>Uma impressão digital de Fourier para o formato de armações de óculos</h3>
+              <ul class="project-summary">
+                <li>Segmentei armações de óculos com o SAM da Meta; codifiquei os contornos como um descritor de Fourier/eigenpolígono</li>
+                <li>Combinado com cor derivada de visão computacional, espessura e tipo de lente para previsão de vendas de itens novos (cold-start)</li>
+                <li>Melhorou o WMAPE em 2% no nível de SKU, e em 8&ndash;12% quando agregado por cor/marca</li>
+              </ul>
+              <p>
+                Segmentei os contornos das lentes com o Segment Anything Model da Meta, codifiquei os pontos do
+                contorno como números complexos e os decompus via análise eigenpolígono (Fourier), ordenada por
+                magnitude de frequência &mdash; um descritor numérico compacto para o estilo da armação. Combinado
+                com a cor da armação derivada de visão computacional (k-means ajustado a uma paleta
+                perceptualmente uniforme), espessura e tipo de lente, isso alimentou um prototype de previsão de
+                vendas para itens novos (cold-start) que <strong>melhorou o WMAPE em 2% no nível de SKU e em
+                8%/12% quando agregado por cor e marca</strong>.
+              </p>
+              <p class="aside-note">Desenvolvido durante meu estágio na VSP Vision; apresentado à equipe, mas ainda não está em produção.</p>
+              <ul class="tags"><li>Visão computacional</li><li>SAM</li><li>Análise de Fourier</li><li>Previsão</li></ul>
+              <button class="project-open" type="button">Testar a demo interativa →</button>
+            </div>
+          </article>
+
+          <article class="project" data-project="vgc-selfplay">
+            <div class="project-art" data-pixel="tree" aria-hidden="true"></div>
+            <div class="project-body">
+              <p class="project-kicker pixel">Pessoal · 2026–presente</p>
+              <h3>RL com self-play para Pokémon competitivo</h3>
+              <ul class="project-summary">
+                <li>Implementei o R-NaD (algoritmo DeepNash da DeepMind) a partir dos artigos, com uma baseline em PPO</li>
+                <li>Encoder Transformer + GRU com um filtro de partículas para inferência de informação oculta</li>
+                <li>Mais de 1M de partidas de self-play por seed em SLURM multi-nó, com mais de 1.800 testes</li>
+              </ul>
+              <p>
+                Implementei o R-NaD (o algoritmo por trás do DeepNash da DeepMind) a partir dos artigos originais,
+                com uma baseline em PPO, um encoder Transformer + GRU e um filtro de partículas que infere
+                informação oculta do oponente. Um motor de busca alfa-beta delimita a probabilidade de vitória sob
+                informação oculta. O treinamento roda em jobs SLURM multi-nó, passando de 1M de partidas de
+                self-play por seed, com mais de 1.800 testes.
+              </p>
+              <ul class="tags"><li>PyTorch</li><li>Teoria dos jogos</li><li>HPC</li></ul>
+              <button class="project-open" type="button">Ver detalhes →</button>
+            </div>
+          </article>
+
+          <article class="project" data-project="histopath-cnn">
+            <div class="project-art" data-pixel="cells" aria-hidden="true"></div>
+            <div class="project-body">
+              <p class="project-kicker pixel">Deep learning · 2021</p>
+              <h3>Classificador histopatológico de câncer de mama</h3>
+              <ul class="project-summary">
+                <li>CNN customizada com um módulo multiescala no estilo Inception</li>
+                <li>92% de acurácia em dados de validação, em cerca de 277.000 patches histopatológicos</li>
+                <li>Detecta carcinoma ductal invasivo</li>
+              </ul>
+              <p>
+                Detectei carcinoma ductal invasivo em cerca de 277.000 patches histopatológicos com 92% de
+                acurácia em dados de validação, usando uma CNN customizada com um módulo multiescala no estilo
+                Inception e data augmentation.
+              </p>
+              <ul class="tags"><li>TensorFlow</li><li>CNNs</li><li>Visão computacional</li></ul>
+              <button class="project-open" type="button">Ver detalhes →</button>
+            </div>
+          </article>
+
+          <article class="project" data-project="capstone-device">
+            <div class="project-art" data-pixel="chip" aria-hidden="true"></div>
+            <div class="project-body">
+              <p class="project-kicker pixel">Engenharia · 2020–2021</p>
+              <h3>Dispositivo mecatrônico de capstone</h3>
+              <ul class="project-summary">
+                <li>Engenheiro líder de software/elétrica na equipe de projeto final de curso</li>
+                <li>Motores, drivers, sensores, comunicação Bluetooth e placas personalizadas</li>
+                <li>Integração com a subequipe mecânica</li>
+              </ul>
+              <p>
+                Engenheiro líder de software e elétrica na equipe de projeto final de curso: motores e drivers,
+                sensores, comunicação Bluetooth e placas personalizadas, integrados com a subequipe mecânica.
+              </p>
+              <ul class="tags"><li>Sistemas embarcados</li><li>Eletrônica</li><li>Trabalho em equipe</li></ul>
+              <button class="project-open" type="button">Ver detalhes →</button>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- RESEARCH -->
+    <section class="section section-alt" id="research">
+      <div class="container">
+        <p class="section-label pixel">04 · Pesquisa</p>
+        <h2>Publicações &amp; apresentações</h2>
+        <div class="research-grid">
+          <div>
+            <h3 class="sub">Manuscrito</h3>
+            <ul class="pubs">
+              <li><strong>Ivo Almeida, P.</strong>, Verma, S. “Spatial and Temporal Characteristics of Wall-Pressure Extrema in Turbulent Channel Flows.” <em>Em preparação.</em></li>
+            </ul>
+            <h3 class="sub">Apresentações em conferências</h3>
+            <ul class="pubs">
+              <li><strong>Ivo Almeida, P.</strong>, Verma, S. “Morphology and alignment of surface pressure extrema in wall-bounded turbulence.” <em>APS-DFD</em>, Orlando, FL, 2026.</li>
+              <li><strong>Ivo Almeida, P.</strong>, Sharma, M., Verma, S. “Morphology and Dynamics of Wall-Pressure Extrema in Wall-Bounded Turbulence.” <em>APS-DFD</em>, Houston, TX, 2025.</li>
+              <li><strong>Ivo Almeida, P.</strong>, Sharma, M., Verma, S. “Exploring Surface Pressure Fluctuations in DNS of Turbulent Channel Flow.” <em>APS-DFD</em>, Salt Lake City, UT, 2024.</li>
+              <li><strong>Ivo Almeida, P.</strong>, Jacobi, I., Cukurel, B., Verma, S. “Distributed Actuation of Turbulent Flow Around a Cylinder using Deep Reinforcement Learning.” <em>APS-DFD</em>, Washington, D.C., 2023.</li>
+              <li><strong>Ivo Almeida, P.</strong>, Jacobi, I., Cukurel, B., Verma, S. “Distributed Actuation of Turbulent Flow Around a Cylinder using Deep Reinforcement Learning.” <em>European Turbulence Conference</em>, Valencia, Spain, 2023.</li>
+            </ul>
+          </div>
+          <div>
+            <h3 class="sub">Prêmios e reconhecimentos</h3>
+            <ul class="badges">
+              <li><span class="badge-icon" data-pixel="trophy" aria-hidden="true"></span><div><strong>Pós-graduando do Ano</strong><span>FAU Broward · 2023–2024</span></div></li>
+              <li><span class="badge-icon" data-pixel="star" aria-hidden="true"></span><div><strong>National Merit Scholar Finalist</strong><span>2020</span></div></li>
+              <li><span class="badge-icon" data-pixel="scroll" aria-hidden="true"></span><div><strong>Dean's List</strong><span>2017–2024</span></div></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- BEYOND WORK -->
+    <section class="section" id="beyond">
+      <div class="container">
+        <p class="section-label pixel">05 · Além do trabalho</p>
+        <h2>Fora do expediente</h2>
+        <div class="hobbies">
+          <article class="hobby">
+            <div class="hobby-icon" data-pixel="mountain" aria-hidden="true"></div>
+            <h3>Escalada</h3>
+            <p>Bouldering é um problema de otimização com magnésio nas mãos: leia a via, teste uma hipótese, caia, itere.</p>
+          </article>
+          <article class="hobby">
+            <div class="hobby-icon" data-pixel="ball" aria-hidden="true"></div>
+            <h3>Vôlei e futevôlei</h3>
+            <p>De quadra e de praia. Futevôlei é aquele clássico brasileiro: vôlei de praia com futebol, sem usar as mãos.</p>
+          </article>
+          <article class="hobby">
+            <div class="hobby-icon" data-pixel="d20" aria-hidden="true"></div>
+            <h3>Dungeons &amp; Dragons</h3>
+            <p>Narrativa colaborativa com teoria da probabilidade embutida. Ainda esperando aquele 20 natural na hora que importa.</p>
+          </article>
+          <article class="hobby">
+            <div class="hobby-icon" data-pixel="pad" aria-hidden="true"></div>
+            <h3>Video games</h3>
+            <p>Pokémon (o suficiente pra construir um agente de RL pra jogar), Minecraft, Counter-Strike, Rocket League e Risk of Rain 2.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section class="section section-alt contact" id="contact">
+      <div class="container contact-inner">
+        <img class="pip" src="/assets/pip.gif" alt="" width="160" height="160" loading="lazy">
+        <div>
+          <p class="section-label pixel">06 · Contato</p>
+          <h2>Vamos conversar.</h2>
+          <p class="contact-lede">
+            Contratando para posições de ML, ciência de dados, CFD ou engenharia térmica? Ou só quer trocar uma
+            ideia sobre turbulência, RL ou jogos? Minha caixa de entrada está aberta.
+          </p>
+          <div class="contact-links">
+            <a class="btn btn-primary" href="mailto:almeida.pedro.ivo@gmail.com">almeida.pedro.ivo@gmail.com</a>
+            <a class="btn btn-ghost" href="https://www.linkedin.com/in/pedroivoalmeida" target="_blank" rel="noopener">LinkedIn</a>
+            <a class="btn btn-ghost" href="https://github.com/Pialmeida" target="_blank" rel="noopener">GitHub</a>
+            <a class="btn btn-ghost" href="/assets/Pedro_Ivo_Almeida_Resume.pdf" target="_blank" rel="noopener">Currículo (PDF)</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- PROJECT DETAIL MODAL -->
+  <dialog class="project-modal" id="project-modal" aria-labelledby="project-modal-title">
+    <button class="project-modal-close" type="button" aria-label="Fechar diálogo">×</button>
+    <div class="project-modal-art" aria-hidden="true"></div>
+    <div class="project-modal-content">
+      <p class="project-modal-kicker pixel"></p>
+      <h3 id="project-modal-title">Detalhes do projeto</h3>
+      <div class="project-modal-text"></div>
+      <ul class="tags project-modal-tags"></ul>
+      <div class="project-modal-extra"></div>
+    </div>
+  </dialog>
+
+  <template id="fourier-demo-template">
+    <div class="fourier-demo">
+      <p class="fourier-intro">
+        Teste o descritor em tempo real: arraste o controle deslizante para mudar quantos harmônicos de Fourier
+        são mantidos (menor magnitude de frequência primeiro), ou desenhe sua própria forma fechada e reconstrua
+        a partir dela.
+      </p>
+      <div class="fourier-row">
+        <div class="fourier-pane">
+          <p class="fourier-label pixel">Contorno de lente simulado</p>
+          <canvas class="fourier-canvas" data-role="lens-original" width="320" height="210"></canvas>
+        </div>
+        <div class="fourier-pane">
+          <p class="fourier-label pixel">Reconstrução</p>
+          <canvas class="fourier-canvas" data-role="lens-recon" width="320" height="210"></canvas>
+        </div>
+      </div>
+      <div class="fourier-controls">
+        <div class="fourier-slider-label">
+          <label for="fourier-descriptor-slider">Descritores de Fourier</label>:
+          <output class="fourier-count" for="fourier-descriptor-slider" data-role="count">6</output>
+        </div>
+        <input type="range" id="fourier-descriptor-slider" class="fourier-slider" data-role="slider" min="1" max="30" value="6">
+      </div>
+      <div class="fourier-row">
+        <div class="fourier-pane">
+          <p class="fourier-label pixel">Desenhe uma forma fechada</p>
+          <canvas class="fourier-canvas fourier-draw" data-role="draw" width="320" height="210"></canvas>
+          <button type="button" class="fourier-clear" data-role="clear">Limpar desenho</button>
+        </div>
+        <div class="fourier-pane">
+          <p class="fourier-label pixel">Sua reconstrução</p>
+          <canvas class="fourier-canvas" data-role="draw-recon" width="320" height="210"></canvas>
+        </div>
+      </div>
+    </div>
+  </template>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© <span id="year">2026</span> Pedro Ivo Almeida · Feito à mão com HTML, CSS e um pequeno solver de lattice-Boltzmann.</p>
+      <a href="#top" class="pixel back-top">↑ Topo</a>
+    </div>
+  </footer>
+
+  <script src="/js/main.js" defer></script>
+  <script src="/js/fluid.js" defer></script>
+  <script src="/js/fourier.js" defer></script>
+  <script src="/js/projects.js" defer></script>
+</body>
+</html>
