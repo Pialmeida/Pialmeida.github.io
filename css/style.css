@@ -289,7 +289,7 @@ img, svg { display: block; max-width: 100%; }
 
 /* Project detail modal */
 dialog.project-modal {
-  width: min(680px, calc(100vw - 48px));
+  width: min(900px, calc(100vw - 48px));
   max-height: calc(100vh - 64px);
   overflow-y: auto; padding: 0;
   background: var(--surface); color: var(--text);
@@ -313,26 +313,43 @@ dialog.project-modal[open] { animation: modal-in .15s ease-out; }
 .project-modal-tags { margin-bottom: 8px; }
 
 /* Fourier-descriptor demo (eyewear frame project) */
-.fourier-demo { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 20px; }
-.fourier-intro { color: var(--muted); font-size: .92rem; }
-.fourier-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.fourier-demo { margin-top: 16px; border-top: 1px solid var(--line); padding-top: 24px; }
+.fourier-intro { color: var(--muted); font-size: .98rem; max-width: 640px; }
+.fourier-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 24px; }
 .fourier-pane { text-align: center; }
-.fourier-label { font-size: .8rem; color: var(--muted); margin-bottom: 6px; text-transform: uppercase; }
+.fourier-label { font-size: .85rem; color: var(--muted); margin-bottom: 10px; text-transform: uppercase; }
 .fourier-canvas {
-  width: 100%; height: auto; display: block;
-  background: var(--bg-alt); border: 1px solid var(--line); border-radius: 8px;
+  width: 100%; height: auto; aspect-ratio: 320 / 210; display: block;
+  background: var(--bg-alt); border: 1px solid var(--line); border-radius: 10px;
 }
 .fourier-draw { cursor: crosshair; }
-.fourier-controls { margin: 4px 0 20px; }
-.fourier-slider-label { display: block; font-size: .9rem; font-weight: 600; margin-bottom: 8px; }
-.fourier-count { font-family: var(--pixel); color: var(--accent); }
-.fourier-slider { width: 100%; }
+.fourier-controls {
+  margin: 4px 0 28px; padding: 16px 20px; background: var(--bg-alt);
+  border: 1px solid var(--line); border-radius: 10px;
+}
+.fourier-slider-label { display: block; font-size: 1rem; font-weight: 600; margin-bottom: 14px; }
+.fourier-count { font-family: var(--pixel); font-size: 1.1rem; color: var(--accent); }
+
+.fourier-slider {
+  width: 100%; margin: 6px 0; -webkit-appearance: none; appearance: none;
+  height: 8px; border-radius: 999px; background: var(--line); outline: none; cursor: pointer;
+}
+.fourier-slider::-webkit-slider-thumb {
+  -webkit-appearance: none; appearance: none; width: 26px; height: 26px; margin-top: -9px;
+  border-radius: 50%; background: var(--accent); border: 4px solid var(--surface); box-shadow: var(--shadow);
+}
+.fourier-slider::-moz-range-track { height: 8px; border-radius: 999px; background: var(--line); }
+.fourier-slider::-moz-range-thumb {
+  width: 26px; height: 26px; border: 4px solid var(--surface); border-radius: 50%;
+  background: var(--accent); box-shadow: var(--shadow);
+}
+
 .fourier-clear {
-  margin-top: 8px; font-family: inherit; font-size: .82rem; padding: 6px 12px; border-radius: 6px;
-  border: 1px solid var(--line); background: none; color: var(--text); cursor: pointer;
+  margin-top: 12px; font-family: inherit; font-size: .88rem; padding: 8px 16px; border-radius: 8px;
+  border: 1px solid var(--line); background: var(--surface); color: var(--text); cursor: pointer;
 }
 .fourier-clear:hover { border-color: var(--accent); color: var(--accent); }
-@media (max-width: 480px) { .fourier-row { grid-template-columns: 1fr; } }
+@media (max-width: 560px) { .fourier-row { grid-template-columns: 1fr; } }
 
 /* Research */
 .research-grid { display: grid; grid-template-columns: 1.7fr 1fr; gap: 48px; }

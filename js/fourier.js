@@ -8,7 +8,7 @@ window.FourierDemo = (() => {
   // A rounded-rectangle "lens" via a superellipse: a believable glasses-lens
   // silhouette, and a clean contrast to a wobblier hand-drawn shape.
   function lensOutline() {
-    const a = 92, b = 54, n = 4.2;
+    const a = 114, b = 66, n = 4.2;
     const pts = [];
     for (let i = 0; i < SAMPLES; i++) {
       const t = (i / SAMPLES) * Math.PI * 2;
@@ -115,7 +115,7 @@ window.FourierDemo = (() => {
       if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
     });
     ctx.closePath();
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 2.5;
     ctx.strokeStyle = color;
     ctx.stroke();
     ctx.restore();
@@ -125,7 +125,7 @@ window.FourierDemo = (() => {
     const ctx = canvas.getContext('2d');
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = color;
-    ctx.font = '13px Inter, sans-serif';
+    ctx.font = '15px Inter, sans-serif';
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.fillText(text, canvas.width / 2, canvas.height / 2);
@@ -190,7 +190,7 @@ window.FourierDemo = (() => {
       ctx.beginPath();
       drawingRaw.forEach(([x, y], i) => (i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y)));
       ctx.strokeStyle = ink;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 2.5;
       ctx.stroke();
     }
     function finishDrawing() {
