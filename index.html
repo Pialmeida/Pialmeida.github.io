@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Pedro Ivo Almeida — ML Engineer &amp; CFD Researcher</title>
-  <meta name="description" content="Pedro Ivo Almeida — PhD candidate at Florida Atlantic University working at the intersection of machine learning and computational fluid dynamics.">
-  <meta property="og:title" content="Pedro Ivo Almeida — ML Engineer & CFD Researcher">
-  <meta property="og:description" content="Deep reinforcement learning, turbulence simulation, and production ML.">
+  <title>Pedro Ivo Almeida — CFD &amp; AI Engineer</title>
+  <meta name="description" content="Pedro Ivo Almeida — PhD candidate at Florida Atlantic University studying wall-bounded turbulence with Direct Numerical Simulation and active flow control with deep reinforcement learning.">
+  <meta property="og:title" content="Pedro Ivo Almeida — CFD & AI Engineer">
+  <meta property="og:description" content="Wall-bounded turbulence, direct numerical simulation, and deep reinforcement learning for active flow control.">
   <meta property="og:type" content="website">
   <meta name="theme-color" content="#0b1220">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
@@ -52,10 +52,10 @@
         <p class="eyebrow pixel">&gt; PhD Candidate · Florida Atlantic University</p>
         <h1>Pedro Ivo Almeida</h1>
         <p class="hero-lede">
-          Machine learning engineer and computational fluid dynamicist. I build models that learn,
-          from deep reinforcement learning that cut cylinder drag by <strong>70%</strong> to
-          XGBoost classifiers running in production.
+          CFD and AI engineer with 5+ years of experience studying wall-bounded turbulence with
+          Direct Numerical Simulation and active flow control with deep reinforcement learning.
         </p>
+        <p class="hero-fun aside-note">I bring that same rigor and curiosity to my hobbies, too.</p>
         <div class="hero-actions">
           <a class="btn btn-primary" href="#projects">View projects</a>
           <a class="btn btn-ghost" href="#contact">Get in touch</a>
@@ -204,6 +204,11 @@
             <div class="project-body">
               <p class="project-kicker pixel">Research · 2021–2024</p>
               <h3>Flow control with deep reinforcement learning</h3>
+              <ul class="project-summary">
+                <li>OpenFOAM LES coupled to a C++ RL library, running 128 MPI ranks per simulation</li>
+                <li>Off-policy RL agent reduced cylinder drag by 70%</li>
+                <li>Surface-pressure analysis identified the separation-control mechanism</li>
+              </ul>
               <p>
                 Coupled an OpenFOAM large-eddy simulation to the <em>smarties</em> RL library in C++, running
                 4 parallel simulations on 128 MPI ranks each. An off-policy agent (ReF-ER) reading 16 surface-pressure
@@ -221,10 +226,15 @@
             <div class="project-body">
               <p class="project-kicker pixel">Research · 2024–present</p>
               <h3>Wall-pressure extrema in wall-bounded turbulence</h3>
+              <ul class="project-summary">
+                <li>DNS of turbulent channel and pipe flow with Nek5000</li>
+                <li>Characterized the shape, orientation, and dynamics of 50,000+ wall-pressure extrema per case</li>
+                <li>Found morphology/alignment patterns tied to near-wall turbulence structure (manuscript in prep)</li>
+              </ul>
               <p>
-                Built a parallel, crash-tolerant downloader and MATLAB/Python pipeline to process 6+&nbsp;TB of JHTDB data,
-                ran DNS of turbulent pipe flow with Nek5000, and characterized the shape, orientation, and dynamics of
-                50,000+ pressure extrema per case across channel, pipe, and boundary-layer flows.
+                Ran DNS of turbulent channel and pipe flow with Nek5000 and characterized the shape, orientation, and
+                dynamics of 50,000+ pressure extrema per case, uncovering morphology and alignment patterns tied to
+                near-wall turbulence structure (manuscript in preparation).
               </p>
               <ul class="tags"><li>Nek5000</li><li>Python</li><li>MATLAB</li><li>DNS</li></ul>
               <button class="project-open" type="button">View details →</button>
@@ -236,6 +246,11 @@
             <div class="project-body">
               <p class="project-kicker pixel">Computer vision · 2026</p>
               <h3>A Fourier fingerprint for eyewear frame shape</h3>
+              <ul class="project-summary">
+                <li>Segmented eyewear frames with Meta's SAM; encoded boundaries as a Fourier/eigenpolygon descriptor</li>
+                <li>Combined with CV-derived color, lens thickness, and lens type for cold-start sales forecasting</li>
+                <li>Improved WMAPE by 2% at the SKU level, 8&ndash;12% aggregated by color/brand</li>
+              </ul>
               <p>
                 Segmented eyewear lens boundaries with Meta's Segment Anything Model, encoded the boundary points
                 as complex numbers, and decomposed them via eigenpolygon (Fourier) analysis sorted by frequency
@@ -255,6 +270,11 @@
             <div class="project-body">
               <p class="project-kicker pixel">Personal · 2026–present</p>
               <h3>Self-play RL for competitive Pokémon</h3>
+              <ul class="project-summary">
+                <li>Implemented R-NaD (DeepMind's DeepNash algorithm) from the papers, with a PPO baseline</li>
+                <li>Transformer + GRU encoder with a particle filter for hidden-information inference</li>
+                <li>1M+ self-play games per seed on multi-node SLURM, backed by 1,800+ tests</li>
+              </ul>
               <p>
                 Implemented R-NaD (the algorithm behind DeepMind's DeepNash) from the papers, with a PPO baseline,
                 a Transformer + GRU encoder, and a particle filter that infers hidden opponent information. An
@@ -271,6 +291,11 @@
             <div class="project-body">
               <p class="project-kicker pixel">Deep learning · 2021</p>
               <h3>Breast cancer histopathology classifier</h3>
+              <ul class="project-summary">
+                <li>Custom CNN with an Inception-style multi-scale module</li>
+                <li>92% held-out accuracy across ~277,000 histopathology patches</li>
+                <li>Detects invasive ductal carcinoma</li>
+              </ul>
               <p>
                 Detected invasive ductal carcinoma in ~277,000 histopathology patches with 92% held-out accuracy,
                 using a custom CNN with an Inception-style multi-scale module and data augmentation.
@@ -285,6 +310,11 @@
             <div class="project-body">
               <p class="project-kicker pixel">Engineering · 2020–2021</p>
               <h3>Mechatronic capstone device</h3>
+              <ul class="project-summary">
+                <li>Lead software/electrical engineer for the senior design team</li>
+                <li>Motors, drivers, sensors, Bluetooth communication, and custom boards</li>
+                <li>Integrated with the mechanical subteam</li>
+              </ul>
               <p>
                 Lead software and electrical engineer for the senior design team: motors and drivers, sensors,
                 Bluetooth communication, and custom boards, integrated with the mechanical subteam.
