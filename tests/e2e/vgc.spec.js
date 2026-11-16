@@ -81,6 +81,109 @@ for (const url of REPORTS) {
     });
   }
 
+  for (const scheme of ['light', 'dark']) {
+    test(`report ${url}: full report view, no serious accessibility violations (${scheme})`, async ({ page }) => {
+      // Every turn is in the DOM here (~13k elements on a Bo3 set): one axe pass alone takes 31-36 s on athene's
+      // EPYC nodes (color-contrast ~22 s, region ~11 s), past the 45 s default once 4 workers share the CPU.
+      test.slow();
+      await page.emulateMedia({ colorScheme: scheme });
+      await page.goto(url);
+      await page.locator('#modes [data-mode="full"]').click();
+      await expect(page.locator('#teams')).toBeVisible();
+      await noSeriousAxe(page);
+      await noHorizontalScroll(page);
+    });
+  }
+
+  test(`report ${url}: the turn viewer is the default view, Next / Prev and the arrow keys change the turn`, async ({ page }) => {
+    await page.goto(url);
+    await expect(page.locator('#viewer')).toBeVisible();
+    await expect(page.locator('#teams')).toBeHidden();
+    await expect(page.locator('article.turn:visible')).toHaveCount(1);
+    const title = page.locator('#v-title');
+    await expect(title).toHaveText(/^Game 1 · (Leads|Turn \d+ of \d+)$/);
+    const start = new URL(page.url()).hash;
+    expect(start).toMatch(/^#g1t\d+$/);
+    await page.locator('#v-next').click();
+    await expect(page).not.toHaveURL(new RegExp(start + '$'));
+    const next = new URL(page.url()).hash;
+    await expect(page.locator(`article${next}`)).toBeVisible();
+    await expect(page.locator('article.turn:visible')).toHaveCount(1);
+    await expect(page.locator('#v-live')).toContainText('Game 1');
+    await page.locator('#v-prev').click();
+    await expect(page).toHaveURL(new RegExp(start + '$'));
+    await page.keyboard.press('ArrowRight');
+    await expect(page).toHaveURL(new RegExp(next + '$'));
+    await page.keyboard.press('ArrowLeft');
+    await expect(page).toHaveURL(new RegExp(start + '$'));
+    await page.keyboard.press('Home');
+    await expect(page).toHaveURL(/#g1t0$/);
+    await expect(title).toHaveText('Game 1 · Leads');
+    await expect(page.locator('#v-prev')).toHaveAttribute('aria-disabled', 'true');
+    await page.keyboard.press('End');
+    const last = await page.locator('.v-strip[data-game="1"] .tick').last().getAttribute('data-target');
+    await expect(page).toHaveURL(new RegExp('#' + last + '$'));
+    // the strip: one tick per turn of the game, the current one marked
+    await page.locator('.v-strip[data-game="1"] .tick[data-target="g1t1"]').click();
+    await expect(page).toHaveURL(/#g1t1$/);
+    await expect(page.locator('.tick[data-target="g1t1"]')).toHaveAttribute('aria-current', 'true');
+    await noHorizontalScroll(page);
+  });
+
+  test(`report ${url}: a #gNtM deep link opens that turn; key moments open the viewer`, async ({ page }) => {
+    const many = !url.includes('selfplay_with_paste');
+    const target = many ? 'g2t3' : 'g1t3';
+    await page.goto(`${url}#${target}`);
+    await expect(page.locator(`article#${target}`)).toBeVisible();
+    await expect(page.locator('article.turn:visible')).toHaveCount(1);
+    await expect(page.locator('#v-title')).toHaveText(new RegExp(`^Game ${many ? 2 : 1} · Turn 3 of \\d+$`));
+    await expect(page.locator(`.tick[data-target="${target}"]`)).toHaveAttribute('aria-current', 'true');
+    // the full report, then a key moment's link back into the viewer
+    await page.locator('#modes [data-mode="full"]').click();
+    await expect(page.locator('#teams')).toBeVisible();
+    expect(await page.locator('article.turn:visible').count()).toBeGreaterThan(1);
+    const moment = page.locator('#moments a.when').first();
+    if (await moment.count()) {
+      const href = await moment.getAttribute('href');
+      await moment.click();
+      await expect(page.locator(`article${href}`)).toBeVisible();
+      await expect(page.locator('article.turn:visible')).toHaveCount(1);
+      await expect(page.locator('#teams')).toBeHidden();
+    }
+    await noHorizontalScroll(page);
+  });
+
+  test(`report ${url}: odd or hostile hashes never blank the page`, async ({ page }) => {
+    // Object-prototype names and a malformed %-escape used to throw at start-up with the viewer's hiding already on.
+    for (const h of ['#constructor', '#__proto__', '#toString', '#%E0%A4', '#nope', '#game99']) {
+      await page.goto('about:blank');
+      await page.goto(url + h);
+      await expect(page.locator('article.turn:visible').first(), h).toBeVisible();
+      await page.keyboard.press('ArrowRight');
+    }
+  });
+
+  test(`report ${url}: in the full report the Game N links stay in the full report`, async ({ page }) => {
+    await page.goto(url);
+    await page.locator('#modes [data-mode="full"]').click();
+    await page.locator('nav.toc a[href="#game1"]').click();
+    await expect(page).toHaveURL(/#game1$/);
+    await expect(page.locator('#teams')).toBeVisible();
+    expect(await page.locator('article.turn:visible').count()).toBeGreaterThan(1);
+  });
+
+  test(`report ${url}: without JavaScript the page is the full report`, async ({ browser }) => {
+    const ctx = await browser.newContext({ javaScriptEnabled: false });
+    const page = await ctx.newPage();
+    await page.goto(url);
+    await expect(page.locator('#viewer')).toBeHidden();
+    await expect(page.locator('#teams')).toBeVisible();
+    expect(await page.locator('article.turn:visible').count()).toBeGreaterThan(3);
+    await expect(page.locator('.xp-opts').first()).toBeVisible();
+    await noHorizontalScroll(page);
+    await ctx.close();
+  });
+
   test(`report ${url} is anonymized and self-contained`, async ({ page }) => {
     const external = [];
     page.on('request', req => { if (!req.url().startsWith('http://127.0.0.1') && !req.url().startsWith('data:')) external.push(req.url()); });
