@@ -425,3 +425,4 @@ dialog.project-modal[open] { animation: modal-in .15s ease-out; }
   .section-alt { background: none; }
   .project, .facts, .hobby { box-shadow: none; break-inside: avoid; }
 }
+.project-link { font-weight: 600; }

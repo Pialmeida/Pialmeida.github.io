@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analisador de replays — Pedro Ivo Almeida</title>
+  <meta name="description" content="Um analisador pós-jogo de séries melhor-de-três de Pokémon VGC: o que o bot de self-play teria jogado em cada turno, com estimativas de vitória calibradas.">
+  <link rel="alternate" hreflang="en" href="https://pialmeida.github.io/vgc/">
+  <link rel="alternate" hreflang="pt-BR" href="https://pialmeida.github.io/pt/vgc/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/vgc/vgc.css">
+  <script>try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Pular para o conteúdo</a>
+
+  <header class="site-header">
+    <nav class="nav container" aria-label="Principal">
+      <a class="brand" href="/pt/" aria-label="Início">P<span>I</span>A</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/pt/#projects">Projetos</a></li>
+        <li><a href="#samples">Exemplos</a></li>
+        <li><a href="#how">Como funciona</a></li>
+        <li><button class="lang-toggle pixel" type="button" aria-label="Mudar para inglês" onclick="try{localStorage.setItem('site-lang','en')}catch(e){}location.href='/vgc/'">EN</button></li>
+        <li><button class="theme-toggle" type="button" aria-label="Alternar modo escuro">
+          <svg viewBox="0 0 8 8" aria-hidden="true" shape-rendering="crispEdges"><path d="M3 0h2v1H3zM1 1h2v1H1zM5 1h2v1H5zM0 3h1v2H0zM7 3h1v2H7zM1 6h2v1H1zM5 6h2v1H5zM3 7h2v1H3zM3 2h2v1H3zM2 3h4v2H2zM3 5h2v1H3z"/></svg>
+        </button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="section vgc-intro">
+      <div class="container">
+        <p class="section-label pixel">Projeto · RL com self-play para Pokémon competitivo</p>
+        <h1>Um bot que explica suas jogadas</h1>
+        <p class="vgc-lede">
+          Um analisador pós-jogo de séries melhor-de-três de Pokémon VGC. Em cada turno ele mostra o que o meu bot de
+          self-play teria jogado por cada lado, as duas alternativas seguintes e uma chance de vitória estimada para
+          cada uma, ao lado do que foi realmente jogado. Quando o solver de final de jogo prova uma vitória, o turno
+          ganha um selo.
+        </p>
+        <p class="vgc-lede">
+          Ele também lê cada rolagem de dano, ordem de turno e mudança de HP para delimitar os pontos de atributo
+          ocultos de cada time, e marca os nocautes que dependeram da rolagem. Só jogos terminados: o analisador nunca
+          joga ao vivo. Os relatórios estão em inglês.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="samples">
+      <div class="container">
+        <h2>Relatórios de exemplo</h2>
+        <div class="vgc-grid">
+          <a class="vgc-card" href="/vgc/reports/real_bo3_set.html" hreflang="en">
+            <span class="vgc-card-kicker pixel">Série real da ladder</span>
+            <span class="vgc-card-title">Melhor-de-três ranqueada, jogadores anônimos</span>
+            <span class="vgc-card-text">Três jogos da ladder Reg M-C (rating por volta de 1500). Painéis dos dois
+              lados: as escolhas do bot contra as jogadas dos humanos, turno a turno.</span>
+          </a>
+          <a class="vgc-card" href="/vgc/reports/selfplay_proven_win.html" hreflang="en">
+            <span class="vgc-card-kicker pixel">Bot contra bot</span>
+            <span class="vgc-card-title">Uma série com vitórias provadas pelo solver</span>
+            <span class="vgc-card-text">Onde o solver de final de jogo prova uma vitória contra qualquer jogada, e
+              onde uma posição ganha escapou.</span>
+          </a>
+          <a class="vgc-card" href="/vgc/reports/selfplay_with_paste.html" hreflang="en">
+            <span class="vgc-card-kicker pixel">Bot contra bot</span>
+            <span class="vgc-card-title">Um jogo, com o time colado</span>
+            <span class="vgc-card-text">Com o time exato de um lado fornecido, o analisador lê só os atributos
+              ocultos do oponente.</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="container vgc-how">
+        <h2>De onde vêm os números</h2>
+        <ul>
+          <li><strong>O bot.</strong> Uma política transformer treinada com R-NaD (o algoritmo do DeepNash) por
+            self-play, partindo de behaviour cloning em replays de jogadores de topo. Em cada turno uma busca pequena
+            ordena as jogadas conjuntas candidatas, os dois Pokémon juntos, contra as respostas prováveis do
+            oponente.</li>
+          <li><strong>As estimativas de vitória são calibradas.</strong> Os valores brutos da busca eram extremos
+            demais, então foram mapeados para resultados observados com um ajuste isotônico em 1.200 séries bot contra
+            bot (cerca de 16.000 decisões) e conferidos em jogos separados: uma porcentagem mostrada erra em média 1,4
+            ponto, e menos de 4 pontos em cada décimo da escala. Opções que o bot não escolheu, jogadas de propósito,
+            também saem calibradas.</li>
+          <li><strong>Diferenças pequenas são ruído.</strong> Opções a poucos pontos da melhor são marcadas como
+            "≈ melhor", com uma faixa (de 6 a 8 pontos) medida buscando as mesmas posições duas vezes.</li>
+          <li><strong>Uma jogada humana fora das opções do bot</strong> é avaliada por uma segunda busca com essa
+            jogada incluída, para que a resposta do oponente a leve em conta.</li>
+          <li><strong>Provas e estimativas ficam separadas.</strong> O selo "provado" vem de um solver exato de final
+            de jogo; todo o resto é marcado como estimativa.</li>
+          <li><strong>Os números de cada lado usam só a visão daquele lado</strong> do jogo, então os dois não
+            precisam somar 100%.</li>
+        </ul>
+        <p><a class="btn btn-ghost" href="/pt/#projects">← Voltar aos projetos</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="vgc-notice" lang="en">Pokémon and Pokémon character names are trademarks of Nintendo, Creatures and
+        GAME FREAK (The Pokémon Company). This is a non-commercial fan project, not affiliated with or endorsed by them
+        or by Pokémon Showdown; it contains no game art.</p>
+      <p class="vgc-notice">Pokémon e os nomes dos personagens Pokémon são marcas registradas da Nintendo, Creatures e
+        GAME FREAK (The Pokémon Company). Este é um projeto de fã sem fins comerciais, sem afiliação ou endosso deles
+        nem do Pokémon Showdown; não contém arte do jogo.</p>
+    </div>
+  </footer>
+
+  <script src="/js/main.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Replay analyzer — Pedro Ivo Almeida</title>
+  <meta name="description" content="A post-game analyzer for Pokémon VGC best-of-three sets: what the self-play bot would have played each turn, with calibrated win estimates.">
+  <link rel="alternate" hreflang="en" href="https://pialmeida.github.io/vgc/">
+  <link rel="alternate" hreflang="pt-BR" href="https://pialmeida.github.io/pt/vgc/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/vgc/vgc.css">
+  <script>try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="site-header">
+    <nav class="nav container" aria-label="Primary">
+      <a class="brand" href="/" aria-label="Home">P<span>I</span>A</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/#projects">Projects</a></li>
+        <li><a href="#samples">Samples</a></li>
+        <li><a href="#how">How it works</a></li>
+        <li><button class="lang-toggle pixel" type="button" aria-label="Switch to Portuguese" onclick="try{localStorage.setItem('site-lang','pt')}catch(e){}location.href='/pt/vgc/'">PT</button></li>
+        <li><button class="theme-toggle" type="button" aria-label="Toggle dark mode">
+          <svg viewBox="0 0 8 8" aria-hidden="true" shape-rendering="crispEdges"><path d="M3 0h2v1H3zM1 1h2v1H1zM5 1h2v1H5zM0 3h1v2H0zM7 3h1v2H7zM1 6h2v1H1zM5 6h2v1H5zM3 7h2v1H3zM3 2h2v1H3zM2 3h4v2H2zM3 5h2v1H3z"/></svg>
+        </button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main">
+    <section class="section vgc-intro">
+      <div class="container">
+        <p class="section-label pixel">Project · Self-play RL for competitive Pokémon</p>
+        <h1>A bot that explains its moves</h1>
+        <p class="vgc-lede">
+          A post-game analyzer for Pokémon VGC best-of-three sets. For every turn it shows what my self-play bot would
+          have played for each side, the next two alternatives, and an estimated win chance for each, next to what was
+          actually played. When the endgame solver proves a win, the turn gets a badge.
+        </p>
+        <p class="vgc-lede">
+          It also reads every damage roll, turn order and HP change to bound each team's hidden stat points, and flags
+          the knockouts that came down to the roll. These are finished games only: the analyzer never plays live.
+        </p>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="samples">
+      <div class="container">
+        <h2>Sample reports</h2>
+        <div class="vgc-grid">
+          <a class="vgc-card" href="/vgc/reports/real_bo3_set.html">
+            <span class="vgc-card-kicker pixel">Real ladder set</span>
+            <span class="vgc-card-title">Rated best-of-three, players anonymized</span>
+            <span class="vgc-card-text">Three games from the Reg M-C ladder (about 1500 rating). Both sides' panels:
+              the bot's picks against the humans' moves, turn by turn.</span>
+          </a>
+          <a class="vgc-card" href="/vgc/reports/selfplay_proven_win.html">
+            <span class="vgc-card-kicker pixel">Bot vs bot</span>
+            <span class="vgc-card-title">A set with solver-proven wins</span>
+            <span class="vgc-card-text">Where the endgame solver proves a win against any play, and where a won
+              position slipped away.</span>
+          </a>
+          <a class="vgc-card" href="/vgc/reports/selfplay_with_paste.html">
+            <span class="vgc-card-kicker pixel">Bot vs bot</span>
+            <span class="vgc-card-title">One game, with a team paste</span>
+            <span class="vgc-card-text">With one side's exact team supplied, the analyzer reads only the opponent's
+              hidden stats.</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="how">
+      <div class="container vgc-how">
+        <h2>How the numbers are made</h2>
+        <ul>
+          <li><strong>The bot.</strong> A transformer policy trained with R-NaD (DeepNash's algorithm) by self-play,
+            starting from behaviour cloning on top players' replays. At each turn a small search ranks its candidate
+            joint moves, both Pokémon together, against the opponent's likely replies.</li>
+          <li><strong>Win estimates are calibrated.</strong> The raw search values were too extreme, so they were
+            mapped to observed outcomes with an isotonic fit on 1,200 bot-vs-bot sets (about 16,000 decisions), then
+            checked on held-out games: a shown percentage is off by 1.4 points on average, and by under 4 points in
+            every tenth of the range. Options the bot did not choose, played on purpose, are calibrated too.</li>
+          <li><strong>Small gaps are noise.</strong> Options within a few points of the best are marked
+            "≈ best", using a band (6 to 8 points) measured by searching the same positions twice.</li>
+          <li><strong>A human move outside the bot's options</strong> is valued by a second search with that move
+            added, so the opponent's reply accounts for it.</li>
+          <li><strong>Proofs and estimates are kept apart.</strong> The "proven" badge comes from an exact endgame
+            solver; everything else is labelled as an estimate.</li>
+          <li><strong>Each side's numbers use only that side's view</strong> of the game, so the two needn't add up
+            to 100%.</li>
+        </ul>
+        <p><a class="btn btn-ghost" href="/#projects">← Back to projects</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="vgc-notice">Pokémon and Pokémon character names are trademarks of Nintendo, Creatures and GAME FREAK
+        (The Pokémon Company). This is a non-commercial fan project, not affiliated with or endorsed by them or by
+        Pokémon Showdown; it contains no game art.</p>
+    </div>
+  </footer>
+
+  <script src="/js/main.js" defer></script>
+</body>
+</html>

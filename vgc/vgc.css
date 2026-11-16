@@ -1,0 +1,20 @@
+/* The replay-analyzer landing pages (/vgc/, /pt/vgc/). The reports themselves are generated, self-contained pages. */
+.vgc-intro { padding-top: 140px; }
+.vgc-intro h1 { font-size: clamp(2rem, 5vw, 3rem); }
+.vgc-lede { max-width: 760px; color: var(--muted); font-size: 1.05rem; }
+.vgc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 18px; }
+.vgc-card {
+  display: flex; flex-direction: column; gap: 8px; padding: 22px 24px; border-radius: 14px;
+  background: var(--surface); border: 1px solid var(--line); color: var(--text); text-decoration: none;
+  transition: border-color .15s ease, transform .15s ease;
+}
+.vgc-card:hover, .vgc-card:focus-visible { border-color: var(--accent); transform: translateY(-2px); }
+.vgc-card-kicker { color: var(--accent); font-size: .8rem; text-transform: uppercase; }
+.vgc-card-title { font-weight: 700; font-size: 1.1rem; }
+.vgc-card-text { color: var(--muted); font-size: .95rem; }
+.vgc-how ul { max-width: 820px; padding-left: 20px; color: var(--muted); }
+.vgc-how li { margin-bottom: 12px; }
+.vgc-how li strong { color: var(--text); }
+.vgc-notice { font-size: .85rem; max-width: 820px; }
+@media (max-width: 600px) { .vgc-intro { padding-top: 112px; } }
+@media (prefers-reduced-motion: reduce) { .vgc-card { transition: none; } .vgc-card:hover { transform: none; } }
