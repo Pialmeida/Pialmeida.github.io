@@ -36,73 +36,84 @@
   <main id="main">
     <section class="section vgc-intro">
       <div class="container">
-        <p class="section-label pixel">Project · Self-play RL for competitive Pokémon</p>
-        <h1>A bot that explains its moves</h1>
+        <p class="section-label pixel">Project · AI for competitive Pokémon</p>
+        <h1>An AI that plays competitive Pokémon, and explains its moves</h1>
         <p class="vgc-lede">
-          A post-game analyzer for Pokémon VGC best-of-three sets. For every turn it shows what my self-play bot would
-          have played for each side, the next two alternatives, and an estimated win chance for each, next to what was
-          actually played. Finished games only: the analyzer never plays live.
+          I built a bot that plays Pokémon doubles, the format of the official world championships. I also built a
+          tool that replays finished games turn by turn and shows what the bot would have done, with its estimated
+          chance of winning.
         </p>
 
-        <h2>Why this game is hard for an AI</h2>
-        <p class="vgc-lede">
-          Chess and Go are deep, but both players see the whole board and take turns. Poker is the classic test of
-          hidden information, but its players also act in turn. VGC (here Pokémon Champions VGC 2026, Regulation M-C)
-          combines hidden information with simultaneous moves, chance and a three-game match.
-        </p>
+        <h2>Why this is harder than chess</h2>
+        <p class="vgc-lede">In chess both players see everything and take turns. None of that holds here.</p>
         <ul class="vgc-hard">
           <li>
-            <h3>Moves at the same time</h3>
+            <h3>Both players move at the same time</h3>
+            <p class="vgc-hard-stat pixel">Blind</p>
+            <p>It's like rock-paper-scissors: there's often no single best move, so the bot has to be hard to
+              predict.</p>
+          </li>
+          <li>
+            <h3>Two Pokémon per side</h3>
             <p class="vgc-hard-stat pixel">2v2</p>
-            <p>Two Pokémon per side on the field. Each turn both players choose a move and a target for each, a switch
-              or a Mega Evolution, at the same moment and blind. The best play is often a mix, not one fixed answer.</p>
+            <p>Every turn is two decisions that have to work together, against two of the opponent's.</p>
           </li>
           <li>
-            <h3>Stats you can't see</h3>
-            <p class="vgc-hard-stat pixel">66</p>
-            <p>Open team sheets show species, moves, items, abilities and natures, but not stat points (0 to 32 per
-              stat, 66 in all), which set damage and speed. Those must be read from the game.</p>
+            <h3>Some information is hidden</h3>
+            <p class="vgc-hard-stat pixel">?</p>
+            <p>You see the opponent's team but not all of its numbers. You have to infer them from what happens, as
+              in poker.</p>
           </li>
           <li>
-            <h3>A blind team preview</h3>
-            <p class="vgc-hard-stat pixel">90</p>
-            <p>Before each game, both players bring 4 of their 6 and choose 2 to lead, without seeing the other's
-              pick: 90 ways to start, per side.</p>
+            <h3>Luck is built in</h3>
+            <p class="vgc-hard-stat pixel">Dice</p>
+            <p>Damage, accuracy and critical hits are random. A good decision can still lose, so the bot has to judge
+              decisions, not results.</p>
           </li>
           <li>
-            <h3>Chance on every hit</h3>
-            <p class="vgc-hard-stat pixel">16</p>
-            <p>Damage lands on one of 16 rolls; critical hits, accuracy and secondary effects add more. A good plan
-              is a good bet, rarely a sure thing.</p>
-          </li>
-          <li>
-            <h3>Three games, one opponent</h3>
+            <h3>Matches are best of three</h3>
             <p class="vgc-hard-stat pixel">Bo3</p>
-            <p>What a team showed in game one is known in game two, and both sides can change their four. Adapting,
-              and hiding what you can, matters.</p>
+            <p>The opponent learns from game one, and so must you.</p>
           </li>
           <li>
-            <h3>A huge space</h3>
+            <h3>Too big to solve by brute force</h3>
             <p class="vgc-hard-stat pixel">10<sup>139</sup></p>
-            <p>Possible team configurations alone: about 10<sup>139</sup> (VGC-Bench, 2025). The game can't be
-              searched whole; a player has to generalize.</p>
+            <p>There are about 10<sup>139</sup> possible teams, far more than the number of atoms in the universe.
+              The bot has to generalize.</p>
           </li>
         </ul>
 
-        <h2>How the bot is built</h2>
+        <h2>How I built it</h2>
         <ul class="vgc-approach">
-          <li><strong>It starts from people:</strong> behaviour cloning on top players' replays.</li>
-          <li><strong>It improves by self-play</strong> with <span class="vgc-nowrap">R-NaD</span>, the algorithm behind DeepNash (DeepMind's Stratego
-            agent), which aims for play that is hard to exploit rather than one fixed best move.</li>
-          <li><strong>It looks a little ahead:</strong> at play time a small search weighs its likeliest joint moves,
-            both Pokémon together, against the opponent's replies.</li>
-          <li><strong>It proves endgames:</strong> an exact solver claims a win only when it has proved it against
-            any reply.</li>
-          <li><strong>It is taught rules, not strategy:</strong> its inputs include exact damage calculations and
-            sound bounds on the opponent's stat points, never a hint of which move is good.</li>
+          <li>It first learned by <strong>copying top human players' games</strong>.</li>
+          <li>Then it improved by <strong>playing millions of games against itself</strong>, using a method DeepMind
+            developed for strategy games with hidden information.</li>
+          <li>Before each move it <strong>thinks a couple of turns ahead</strong>.</li>
+          <li>In endgames it <strong>calculates exactly</strong>, and it only claims a win it has proven.</li>
+          <li>It was <strong>taught the rules of the game, never which moves are good</strong>.</li>
         </ul>
-        <p class="vgc-lede vgc-next">The <a href="#samples">sample reports</a> below show it on a real ladder set and
-          on bot-vs-bot games.</p>
+
+        <h2>Results so far</h2>
+        <ul class="vgc-hard">
+          <li>
+            <h3>Beats a hand-coded expert bot</h3>
+            <p class="vgc-hard-stat pixel">8 in 10</p>
+            <p>It wins 82-85% of best-of-three matches against two scripted bots that calculate damage exactly and
+              use standard doubles tactics. That's 256 matches against each, played with teams real players used.</p>
+          </li>
+          <li>
+            <h3>It keeps getting better</h3>
+            <p class="vgc-hard-stat pixel">72%</p>
+            <p>The current version beats an earlier version of itself in 72% of matches.</p>
+          </li>
+          <li>
+            <h3>Next: real people</h3>
+            <p class="vgc-hard-stat pixel">Soon</p>
+            <p>It will play rated human players on the Pokémon Showdown ladder. Its rating will go here.</p>
+          </li>
+        </ul>
+        <p class="vgc-lede vgc-next">The <a href="#samples">sample reports</a> below show the analyzer on a real
+          ladder set and on bot-vs-bot games.</p>
       </div>
     </section>
 

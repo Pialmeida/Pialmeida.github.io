@@ -36,76 +36,85 @@
   <main id="main">
     <section class="section vgc-intro">
       <div class="container">
-        <p class="section-label pixel">Projeto · RL com self-play para Pokémon competitivo</p>
-        <h1>Um bot que explica suas jogadas</h1>
+        <p class="section-label pixel">Projeto · IA para Pokémon competitivo</p>
+        <h1>Uma IA que joga Pokémon competitivo e explica suas jogadas</h1>
         <p class="vgc-lede">
-          Um analisador pós-jogo de séries melhor-de-três de Pokémon VGC. Em cada turno ele mostra o que o meu bot de
-          self-play teria jogado por cada lado, as duas alternativas seguintes e uma chance de vitória estimada para
-          cada uma, ao lado do que foi realmente jogado. Só jogos terminados: o analisador nunca joga ao vivo. Os
-          relatórios estão em inglês.
+          Criei um bot que joga Pokémon em duplas, o formato do campeonato mundial oficial. Também criei uma
+          ferramenta que repassa jogos terminados turno a turno e mostra o que o bot teria feito, com a chance de
+          vitória estimada. Os relatórios estão em inglês.
         </p>
 
-        <h2>Por que este jogo é difícil para uma IA</h2>
-        <p class="vgc-lede">
-          Xadrez e Go são profundos, mas os dois jogadores veem o tabuleiro inteiro e jogam um de cada vez. O pôquer é
-          o teste clássico de informação oculta, mas nele também se joga em turnos. O VGC (aqui, Pokémon Champions VGC
-          2026, Regulamento M-C) junta informação oculta, jogadas simultâneas, sorte e uma partida de três jogos.
-        </p>
+        <h2>Por que isto é mais difícil que xadrez</h2>
+        <p class="vgc-lede">No xadrez os dois jogadores veem tudo e jogam um de cada vez. Nada disso vale aqui.</p>
         <ul class="vgc-hard">
           <li>
-            <h3>Jogadas ao mesmo tempo</h3>
+            <h3>Os dois jogam ao mesmo tempo</h3>
+            <p class="vgc-hard-stat pixel">Às cegas</p>
+            <p>É como pedra-papel-tesoura: muitas vezes não existe uma única melhor jogada, então o bot precisa ser
+              difícil de prever.</p>
+          </li>
+          <li>
+            <h3>Dois Pokémon por lado</h3>
             <p class="vgc-hard-stat pixel">2v2</p>
-            <p>Dois Pokémon por lado em campo. A cada turno os dois jogadores escolhem um golpe e um alvo para cada
-              um, uma troca ou uma Mega Evolução, no mesmo instante e às cegas. A melhor jogada costuma ser uma
-              mistura, não uma resposta fixa.</p>
+            <p>Cada turno são duas decisões que precisam funcionar juntas, contra duas do oponente.</p>
           </li>
           <li>
-            <h3>Atributos que você não vê</h3>
-            <p class="vgc-hard-stat pixel">66</p>
-            <p>As listas de time abertas mostram espécies, golpes, itens, habilidades e naturezas, mas não os pontos
-              de atributo (0 a 32 por atributo, 66 no total), que definem dano e velocidade. Eles precisam ser
-              deduzidos do jogo.</p>
+            <h3>Parte da informação é oculta</h3>
+            <p class="vgc-hard-stat pixel">?</p>
+            <p>Você vê o time do oponente, mas não todos os seus números. É preciso deduzi-los pelo que acontece, como
+              no pôquer.</p>
           </li>
           <li>
-            <h3>Team preview às cegas</h3>
-            <p class="vgc-hard-stat pixel">90</p>
-            <p>Antes de cada jogo, cada jogador leva 4 dos seus 6 e escolhe 2 para começar, sem ver a escolha do
-              outro: 90 formas de começar, por lado.</p>
+            <h3>A sorte faz parte</h3>
+            <p class="vgc-hard-stat pixel">Dados</p>
+            <p>Dano, precisão e acertos críticos são aleatórios. Uma boa decisão ainda pode perder, então o bot
+              precisa julgar decisões, não resultados.</p>
           </li>
           <li>
-            <h3>Sorte em cada golpe</h3>
-            <p class="vgc-hard-stat pixel">16</p>
-            <p>O dano cai em uma de 16 rolagens; acertos críticos, precisão e efeitos secundários somam mais sorte. Um
-              bom plano é uma boa aposta, raramente uma certeza.</p>
-          </li>
-          <li>
-            <h3>Três jogos, um oponente</h3>
+            <h3>Partidas melhor-de-três</h3>
             <p class="vgc-hard-stat pixel">Bo3</p>
-            <p>O que um time mostrou no primeiro jogo fica conhecido no segundo, e os dois lados podem mudar os quatro
-              que levam. Adaptar-se, e esconder o que der, faz diferença.</p>
+            <p>O oponente aprende com o primeiro jogo, e você também precisa aprender.</p>
           </li>
           <li>
-            <h3>Um espaço enorme</h3>
+            <h3>Grande demais para força bruta</h3>
             <p class="vgc-hard-stat pixel">10<sup>139</sup></p>
-            <p>Só as configurações de time possíveis são cerca de 10<sup>139</sup> (VGC-Bench, 2025). Não dá para
-              buscar o jogo inteiro; é preciso generalizar.</p>
+            <p>Existem cerca de 10<sup>139</sup> times possíveis, muito mais que o número de átomos do universo. O bot
+              precisa generalizar.</p>
           </li>
         </ul>
 
-        <h2>Como o bot é feito</h2>
+        <h2>Como eu o construí</h2>
         <ul class="vgc-approach">
-          <li><strong>Começa pelas pessoas:</strong> clonagem de comportamento em replays dos melhores jogadores.</li>
-          <li><strong>Melhora jogando contra si mesmo</strong> com o <span class="vgc-nowrap">R-NaD</span>, o algoritmo por trás do DeepNash (o agente
-            de Stratego da DeepMind), que busca um jogo difícil de explorar em vez de uma única melhor jogada fixa.</li>
-          <li><strong>Olha um pouco à frente:</strong> na hora de jogar, uma pequena busca compara suas jogadas
-            conjuntas mais prováveis, os dois Pokémon juntos, com as respostas do oponente.</li>
-          <li><strong>Prova finais de jogo:</strong> um solver exato só declara vitória quando a provou contra
-            qualquer resposta.</li>
-          <li><strong>Aprende regras, não estratégia:</strong> suas entradas incluem cálculos exatos de dano e limites
-            garantidos para os pontos de atributo do oponente, nunca uma dica de qual jogada é boa.</li>
+          <li>Primeiro ele aprendeu <strong>copiando jogos dos melhores jogadores humanos</strong>.</li>
+          <li>Depois melhorou <strong>jogando milhões de partidas contra si mesmo</strong>, com um método que a
+            DeepMind criou para jogos de estratégia com informação oculta.</li>
+          <li>Antes de cada jogada ele <strong>pensa alguns turnos à frente</strong>.</li>
+          <li>Nos finais de jogo ele <strong>calcula de forma exata</strong> e só declara uma vitória que provou.</li>
+          <li>Ele <strong>aprendeu as regras do jogo, nunca quais jogadas são boas</strong>.</li>
         </ul>
-        <p class="vgc-lede vgc-next">Os <a href="#samples">relatórios de exemplo</a> abaixo mostram o bot em uma série
-          real da ladder e em jogos bot contra bot.</p>
+
+        <h2>Resultados até agora</h2>
+        <ul class="vgc-hard">
+          <li>
+            <h3>Vence um bot especialista programado à mão</h3>
+            <p class="vgc-hard-stat pixel">8 em 10</p>
+            <p>Ele vence 82-85% das partidas melhor-de-três contra dois bots programados que calculam o dano de forma
+              exata e usam táticas padrão de duplas. São 256 partidas contra cada um, com times que jogadores reais
+              usaram.</p>
+          </li>
+          <li>
+            <h3>Continua melhorando</h3>
+            <p class="vgc-hard-stat pixel">72%</p>
+            <p>A versão atual vence uma versão anterior de si mesma em 72% das partidas.</p>
+          </li>
+          <li>
+            <h3>Próximo passo: pessoas reais</h3>
+            <p class="vgc-hard-stat pixel">Em breve</p>
+            <p>Ele vai jogar contra jogadores humanos na ladder ranqueada do Pokémon Showdown. Seu rating vai aparecer aqui.</p>
+          </li>
+        </ul>
+        <p class="vgc-lede vgc-next">Os <a href="#samples">relatórios de exemplo</a> abaixo mostram o analisador em uma
+          série real da ladder e em jogos entre bots.</p>
       </div>
     </section>
 
