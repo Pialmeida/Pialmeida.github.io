@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Analisador de replays — Pedro Ivo Almeida</title>
-  <meta name="description" content="Um analisador pós-jogo de séries melhor-de-três de Pokémon VGC: o que o bot de self-play teria jogado em cada turno, com estimativas de vitória calibradas.">
+  <meta name="description" content="Um analisador pós-jogo de séries melhor-de-três de Pokémon VGC: o que o RNADy-Bot, um bot de self-play, teria jogado em cada turno, com estimativas de vitória calibradas.">
   <link rel="alternate" hreflang="en" href="https://pialmeida.github.io/vgc/">
   <link rel="alternate" hreflang="pt-BR" href="https://pialmeida.github.io/pt/vgc/">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -39,8 +39,8 @@
         <p class="section-label pixel">Projeto · IA para Pokémon competitivo</p>
         <h1>Uma IA que joga Pokémon competitivo e explica suas jogadas</h1>
         <p class="vgc-lede">
-          Criei um bot que joga Pokémon em duplas, o formato do campeonato mundial oficial. Também criei uma
-          ferramenta que repassa jogos terminados turno a turno e mostra o que o bot teria feito, com a chance de
+          Criei o RNADy-Bot, uma IA que joga Pokémon em duplas, o formato do campeonato mundial oficial. Também criei uma
+          ferramenta que repassa jogos terminados turno a turno e mostra o que o RNADy-Bot teria feito, com a chance de
           vitória estimada. Os relatórios estão em inglês.
         </p>
 
@@ -50,7 +50,7 @@
           <li>
             <h3>Os dois jogam ao mesmo tempo</h3>
             <p class="vgc-hard-stat pixel">Às cegas</p>
-            <p>É como pedra-papel-tesoura: muitas vezes não existe uma única melhor jogada, então o bot precisa ser
+            <p>É como pedra-papel-tesoura: muitas vezes não existe uma única melhor jogada, então o RNADy-Bot precisa ser
               difícil de prever.</p>
           </li>
           <li>
@@ -67,7 +67,7 @@
           <li>
             <h3>A sorte faz parte</h3>
             <p class="vgc-hard-stat pixel">Dados</p>
-            <p>Dano, precisão e acertos críticos são aleatórios. Uma boa decisão ainda pode perder, então o bot
+            <p>Dano, precisão e acertos críticos são aleatórios. Uma boa decisão ainda pode perder, então o RNADy-Bot
               precisa julgar decisões, não resultados.</p>
           </li>
           <li>
@@ -78,7 +78,7 @@
           <li>
             <h3>Grande demais para força bruta</h3>
             <p class="vgc-hard-stat pixel">10<sup>139</sup></p>
-            <p>Existem cerca de 10<sup>139</sup> times possíveis, muito mais que o número de átomos do universo. O bot
+            <p>Existem cerca de 10<sup>139</sup> times possíveis, muito mais que o número de átomos do universo. O RNADy-Bot
               precisa generalizar.</p>
           </li>
         </ul>
@@ -110,7 +110,7 @@
           <li>
             <h3>Próximo passo: pessoas reais</h3>
             <p class="vgc-hard-stat pixel">Em breve</p>
-            <p>Ele vai jogar contra jogadores humanos na ladder ranqueada do Pokémon Showdown. Seu rating vai aparecer aqui.</p>
+            <p>Ele vai jogar contra jogadores humanos na ladder ranqueada do Pokémon Showdown, como RNADy-Bot. Seu rating vai aparecer aqui.</p>
           </li>
         </ul>
         <p class="vgc-lede vgc-next">Os <a href="#samples">relatórios de exemplo</a> abaixo mostram o analisador em uma
@@ -126,7 +126,7 @@
             <span class="vgc-card-kicker pixel">Série real da ladder</span>
             <span class="vgc-card-title">Melhor-de-três ranqueada, jogadores anônimos</span>
             <span class="vgc-card-text">Três jogos da ladder Reg M-C (rating por volta de 1500). Painéis dos dois
-              lados: as escolhas do bot contra as jogadas dos humanos, turno a turno.</span>
+              lados: as escolhas do RNADy-Bot contra as jogadas dos humanos, turno a turno.</span>
           </a>
           <a class="vgc-card" href="/vgc/reports/selfplay_proven_win.html" hreflang="en">
             <span class="vgc-card-kicker pixel">Bot contra bot</span>
@@ -148,18 +148,18 @@
       <div class="container vgc-how">
         <h2>De onde vêm os números</h2>
         <ul>
-          <li><strong>O bot.</strong> Uma política transformer treinada com R-NaD (o algoritmo do DeepNash) por
+          <li><strong>RNADy-Bot.</strong> Uma política transformer treinada com R-NaD (o algoritmo do DeepNash) por
             self-play, partindo de behaviour cloning em replays de jogadores de topo. Em cada turno uma busca pequena
             ordena as jogadas conjuntas candidatas, os dois Pokémon juntos, contra as respostas prováveis do
             oponente.</li>
           <li><strong>As estimativas de vitória são calibradas.</strong> Os valores brutos da busca eram extremos
             demais, então foram mapeados para resultados observados com um ajuste isotônico em 1.200 séries bot contra
             bot (cerca de 16.000 decisões) e conferidos em jogos separados: uma porcentagem mostrada erra em média 1,4
-            ponto, e menos de 4 pontos em cada décimo da escala. Opções que o bot não escolheu, jogadas de propósito,
+            ponto, e menos de 4 pontos em cada décimo da escala. Opções que o RNADy-Bot não escolheu, jogadas de propósito,
             também saem calibradas.</li>
           <li><strong>Diferenças pequenas são ruído.</strong> Opções a poucos pontos da melhor são marcadas como
             "≈ melhor", com uma faixa (de 6 a 8 pontos) medida buscando as mesmas posições duas vezes.</li>
-          <li><strong>Uma jogada humana fora das opções do bot</strong> é avaliada por uma segunda busca com essa
+          <li><strong>Uma jogada humana fora das opções do RNADy-Bot</strong> é avaliada por uma segunda busca com essa
             jogada incluída, para que a resposta do oponente a leve em conta.</li>
           <li><strong>Provas e estimativas ficam separadas.</strong> O selo "provado" vem de um solver exato de final
             de jogo; todo o resto é marcado como estimativa.</li>

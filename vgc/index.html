@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Replay analyzer — Pedro Ivo Almeida</title>
-  <meta name="description" content="A post-game analyzer for Pokémon VGC best-of-three sets: what the self-play bot would have played each turn, with calibrated win estimates.">
+  <meta name="description" content="A post-game analyzer for Pokémon VGC best-of-three sets: what RNADy-Bot, a self-play bot, would have played each turn, with calibrated win estimates.">
   <link rel="alternate" hreflang="en" href="https://pialmeida.github.io/vgc/">
   <link rel="alternate" hreflang="pt-BR" href="https://pialmeida.github.io/pt/vgc/">
   <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -39,8 +39,8 @@
         <p class="section-label pixel">Project · AI for competitive Pokémon</p>
         <h1>An AI that plays competitive Pokémon, and explains its moves</h1>
         <p class="vgc-lede">
-          I built a bot that plays Pokémon doubles, the format of the official world championships. I also built a
-          tool that replays finished games turn by turn and shows what the bot would have done, with its estimated
+          I built RNADy-Bot, an AI that plays Pokémon doubles, the format of the official world championships. I also built a
+          tool that replays finished games turn by turn and shows what RNADy-Bot would have done, with its estimated
           chance of winning.
         </p>
 
@@ -50,7 +50,7 @@
           <li>
             <h3>Both players move at the same time</h3>
             <p class="vgc-hard-stat pixel">Blind</p>
-            <p>It's like rock-paper-scissors: there's often no single best move, so the bot has to be hard to
+            <p>It's like rock-paper-scissors: there's often no single best move, so RNADy-Bot has to be hard to
               predict.</p>
           </li>
           <li>
@@ -67,7 +67,7 @@
           <li>
             <h3>Luck is built in</h3>
             <p class="vgc-hard-stat pixel">Dice</p>
-            <p>Damage, accuracy and critical hits are random. A good decision can still lose, so the bot has to judge
+            <p>Damage, accuracy and critical hits are random. A good decision can still lose, so RNADy-Bot has to judge
               decisions, not results.</p>
           </li>
           <li>
@@ -79,7 +79,7 @@
             <h3>Too big to solve by brute force</h3>
             <p class="vgc-hard-stat pixel">10<sup>139</sup></p>
             <p>There are about 10<sup>139</sup> possible teams, far more than the number of atoms in the universe.
-              The bot has to generalize.</p>
+              RNADy-Bot has to generalize.</p>
           </li>
         </ul>
 
@@ -109,7 +109,7 @@
           <li>
             <h3>Next: real people</h3>
             <p class="vgc-hard-stat pixel">Soon</p>
-            <p>It will play rated human players on the Pokémon Showdown ladder. Its rating will go here.</p>
+            <p>It will play rated human players on the Pokémon Showdown ladder, as RNADy-Bot. Its rating will go here.</p>
           </li>
         </ul>
         <p class="vgc-lede vgc-next">The <a href="#samples">sample reports</a> below show the analyzer on a real
@@ -125,7 +125,7 @@
             <span class="vgc-card-kicker pixel">Real ladder set</span>
             <span class="vgc-card-title">Rated best-of-three, players anonymized</span>
             <span class="vgc-card-text">Three games from the Reg M-C ladder (about 1500 rating). Both sides' panels:
-              the bot's picks against the humans' moves, turn by turn.</span>
+              RNADy-Bot's picks against the humans' moves, turn by turn.</span>
           </a>
           <a class="vgc-card" href="/vgc/reports/selfplay_proven_win.html">
             <span class="vgc-card-kicker pixel">Bot vs bot</span>
@@ -147,16 +147,16 @@
       <div class="container vgc-how">
         <h2>How the numbers are made</h2>
         <ul>
-          <li><strong>The bot.</strong> A transformer policy trained with R-NaD (DeepNash's algorithm) by self-play,
+          <li><strong>RNADy-Bot.</strong> A transformer policy trained with R-NaD (DeepNash's algorithm) by self-play,
             starting from behaviour cloning on top players' replays. At each turn a small search ranks its candidate
             joint moves, both Pokémon together, against the opponent's likely replies.</li>
           <li><strong>Win estimates are calibrated.</strong> The raw search values were too extreme, so they were
             mapped to observed outcomes with an isotonic fit on 1,200 bot-vs-bot sets (about 16,000 decisions), then
             checked on held-out games: a shown percentage is off by 1.4 points on average, and by under 4 points in
-            every tenth of the range. Options the bot did not choose, played on purpose, are calibrated too.</li>
+            every tenth of the range. Options RNADy-Bot did not choose, played on purpose, are calibrated too.</li>
           <li><strong>Small gaps are noise.</strong> Options within a few points of the best are marked
             "≈ best", using a band (6 to 8 points) measured by searching the same positions twice.</li>
-          <li><strong>A human move outside the bot's options</strong> is valued by a second search with that move
+          <li><strong>A human move outside RNADy-Bot's options</strong> is valued by a second search with that move
             added, so the opponent's reply accounts for it.</li>
           <li><strong>Proofs and estimates are kept apart.</strong> The "proven" badge comes from an exact endgame
             solver; everything else is labelled as an estimate.</li>
