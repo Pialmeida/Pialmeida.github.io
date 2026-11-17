@@ -2,6 +2,26 @@
 .vgc-intro { padding-top: 140px; }
 .vgc-intro h1 { font-size: clamp(2rem, 5vw, 3rem); }
 .vgc-lede { max-width: 760px; color: var(--muted); font-size: 1.05rem; }
+/* "Why this game is hard" cards and the approach list, inside the intro. */
+.vgc-intro h2 { margin: 44px 0 10px; font-size: clamp(1.4rem, 2.6vw, 1.9rem); }
+.vgc-hard {
+  list-style: none; margin: 20px 0 0; padding: 0;
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 14px;
+}
+.vgc-hard li {
+  display: flex; flex-direction: column; padding: 16px 20px; border-radius: 14px;
+  background: var(--surface); border: 1px solid var(--line);
+}
+.vgc-hard h3 { font-size: 1.05rem; margin-bottom: 4px; }
+.vgc-hard p { color: var(--muted); font-size: .92rem; line-height: 1.55; margin: 0; }
+.vgc-hard .vgc-hard-stat { order: -1; color: var(--accent); font-size: 1.5rem; line-height: 1.2; margin-bottom: 6px; }
+.vgc-hard sup { line-height: 0; }
+.vgc-hard-stat sup { font-size: .6em; }
+.vgc-approach { list-style: none; margin: 14px 0 0; padding: 0; max-width: 860px; color: var(--muted); }
+.vgc-approach li { padding-left: 14px; border-left: 2px solid var(--accent); margin-bottom: 8px; }
+.vgc-approach strong { color: var(--text); }
+.vgc-next { margin: 20px 0 0; }
+.vgc-nowrap { white-space: nowrap; }
 .vgc-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 18px; }
 .vgc-card {
   display: flex; flex-direction: column; gap: 8px; padding: 22px 24px; border-radius: 14px;
