@@ -20,8 +20,11 @@ test.afterEach(async ({}, testInfo) => {
 });
 
 async function noHorizontalScroll(page) {
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-  expect(overflow).toBeLessThanOrEqual(0);
+  // Against the device's width, not window.innerWidth: a mobile browser widens its layout viewport to fit content
+  // that overflows, so innerWidth grows with the page and the overflow reads 0 (a 448 px page on a 412 px phone).
+  const device = page.viewportSize().width;
+  const width = await page.evaluate(() => document.documentElement.scrollWidth);
+  expect(width - device).toBeLessThanOrEqual(0);
 }
 
 async function noSeriousAxe(page) {
@@ -151,6 +154,30 @@ for (const url of REPORTS) {
       await expect(page.locator('#teams')).toBeHidden();
     }
     await noHorizontalScroll(page);
+  });
+
+  test(`report ${url}: the chips show embedded sprites and the notice credits them`, async ({ page }) => {
+    await page.goto(url);
+    const spr = page.locator('article.turn.cur .spr').first();
+    await expect(spr).toBeVisible();
+    const bg = await spr.evaluate(e => getComputedStyle(e).backgroundImage);
+    expect(bg).toMatch(/^url\("data:image\/png;base64,/);
+    await expect(page.locator('footer.notice')).toContainText('Smogon Sprite Project');
+    await expect(page.locator('footer.notice')).not.toContainText('no game art');
+  });
+
+  test(`report ${url}: the site bar stays on screen in both views`, async ({ page, request }) => {
+    await page.goto(url);
+    const bar = page.locator('nav.sitebar');
+    for (const mode of ['viewer', 'full']) {
+      if (mode === 'full') await page.locator('#modes [data-mode="full"]').click();
+      await page.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+      await expect(bar).toBeInViewport();
+      expect(Math.round((await bar.boundingBox()).y)).toBe(0);
+    }
+    await expect(bar.locator('a[href="/vgc/"]')).toBeVisible();
+    await expect(bar.locator('a[href="/"]')).toBeVisible();
+    for (const href of ['/vgc/', '/']) expect((await request.get(href)).status(), href).toBe(200);
   });
 
   test(`report ${url}: odd or hostile hashes never blank the page`, async ({ page }) => {
