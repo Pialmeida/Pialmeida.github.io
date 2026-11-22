@@ -137,11 +137,11 @@
       if (live) th.append(h('span', { class: 'tag' }, T.interim));
       let verdict = T.na;
       if (adj && adj.ci95) verdict = adj.ci95[0] > 0 ? T.better : adj.ci95[1] < 0 ? T.worse : T.clear;
-      const arm = a => h('td', { class: 'num' }, `${pct(a.win_rate)} · ${a.performance_elo ? a.performance_elo.elo : T.na}`);
+      const arm = a => h('td', { class: 'num' }, `${pct(a.win_rate)} · ${a.performance_elo ? a.performance_elo.elo : T.na}`, h('br'), h('span', { class: 'sub' }, `${a.sets} ${T.sets}`));
       const tr = h('tr', live ? { class: 'row-interim' } : {});
-      tr.append(th, h('td', {}, text(v.bot)), h('td', { class: 'num' }, `${c.sets} / ${v.sets}`), arm(c), arm(v),
-        h('td', { class: 'num' }, adj ? `${signed(adj.variant_minus_control_elo)} ${ci(adj.ci95)}` : T.na), h('td', {}, verdict));
-      if (live) tr.lastChild.append(document.createTextNode(` (${text(s.interim_label)})`));
+      tr.append(th, h('td', { class: 'desc' }, text(v.bot)),
+        h('td', { class: 'num' }, adj ? `${signed(adj.variant_minus_control_elo)} ${ci(adj.ci95)}` : T.na), h('td', {}, verdict), arm(c), arm(v));
+      if (live) tr.children[3].append(document.createTextNode(` (${text(s.interim_label)})`));
       return tr;
     });
     document.getElementById('ladder-ab').replaceChildren(...rows);

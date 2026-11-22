@@ -76,7 +76,7 @@
         <div class="vgc-tablewrap" role="group" aria-label="Tabela A/B, rola para o lado em telas pequenas" tabindex="0">
           <table class="vgc-table">
             <caption>Amostras A/B intercaladas. “Taxa de vitórias · Elo de desempenho” aparece por versão.</caption>
-            <thead><tr><th scope="col">Amostra</th><th scope="col">A variante</th><th scope="col" class="num">Séries (controle / variante)</th><th scope="col" class="num">Controle: taxa de vitórias · Elo de desempenho</th><th scope="col" class="num">Variante: taxa de vitórias · Elo de desempenho</th><th scope="col" class="num">Efeito ajustado pelo rating, Elo [intervalo de 95%]</th><th scope="col">Leitura</th></tr></thead>
+            <thead><tr><th scope="col">Amostra</th><th scope="col">A variante</th><th scope="col" class="num">Efeito ajustado pelo rating, Elo [intervalo de 95%]</th><th scope="col">Leitura</th><th scope="col" class="num">Controle: taxa de vitórias · Elo de desempenho</th><th scope="col" class="num">Variante: taxa de vitórias · Elo de desempenho</th></tr></thead>
             <tbody id="ladder-ab"></tbody>
           </table>
         </div>
@@ -92,7 +92,7 @@
           <li><strong>Elo de desempenho.</strong> O rating em que os resultados do bot contra os oponentes que ele realmente enfrentou, cada um com o rating que tinha na hora, ficariam equilibrados em média. É um ajuste de máxima verossimilhança com intervalo de 95% por reamostragem de oponentes, então pode ser comparado entre amostras. Desistências antecipadas e desconexões ficam de fora. Com 150 a 300 séries o intervalo ainda é de cerca de ±70 a ±100 Elo.</li>
           <li><strong>A/B intercalado.</strong> A partir da s07 cada série sorteia se joga o controle ou a variante. As duas versões enfrentam o mesmo público nos mesmos horários, então madrugadas fracas e oponentes fortes afetam as duas igualmente. É muito mais justo do que rodar uma versão depois da outra.</li>
           <li><strong>Efeito ajustado pelo rating.</strong> Uma regressão logística de “venceu a série” sobre qual versão jogou e o rating do oponente, convertida em pontos de Elo. Positivo significa que a variante é melhor. O intervalo vem da reamostragem das séries. Quando ele contém o zero, a amostra não consegue distinguir as duas versões.</li>
-          <li><strong>O que mostra até agora.</strong> Offline, contra outros bots, cada variante parecia 3 a 6 pontos melhor que o controle. Na ladder, nas duas amostras A/B concluídas a variante não foi claramente melhor, e sua estimativa pontual ficou abaixo de zero. Os intervalos são largos, então pequenos ganhos não estão descartados, mas não há sinal de que os ganhos offline se transfiram para jogadores reais. Testes de bot contra bot ordenam melhor os times do que os bots. A amostra atual ainda está rodando; seus números são parciais.</li>
+          <li><strong>O que mostra até agora.</strong> Offline, contra outros bots, as variantes pareciam até 3 a 6 pontos melhores que uma versão anterior. Na ladder, nas duas amostras A/B concluídas a variante não foi claramente melhor e sua estimativa pontual ficou abaixo de zero, mas os dois intervalos incluem o zero: pequenos ganhos não estão confirmados nem descartados. Uma amostra de 300 séries só separa versões a cerca de ±95 Elo de distância; a partir da s10 as amostras têm 600 séries. Testes de bot contra bot ordenam melhor os times do que os bots.</li>
           </ul>
         <p><a class="btn btn-ghost" href="/pt/vgc/">← Voltar ao analisador de replays</a></p>
       </div>

@@ -258,6 +258,11 @@ for (const { url, updated, interim } of LADDER) {
     await expect(page.locator('#ladder-samples tr.row-interim')).toContainText(interim);
     await expect(page.locator('#ladder-ab tr')).toHaveCount(3);
     await expect(page.locator('#ladder-stats li')).toHaveCount(4);
+    // on a desktop-width screen the A/B table fits without sideways scrolling (the effect column stays visible)
+    if (page.viewportSize().width >= 1280) {
+      const fits = await page.locator('#ladder-ab').evaluate(tb => { const w = tb.closest('.vgc-tablewrap'); return w.scrollWidth <= w.clientWidth; });
+      expect(fits).toBe(true);
+    }
     await expect(page.locator('#ladder-updated')).toHaveText(updated);
     await expect(page.locator('table th[scope="col"]').first()).toBeVisible();
     await noHorizontalScroll(page);

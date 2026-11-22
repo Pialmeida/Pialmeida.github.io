@@ -76,7 +76,7 @@
         <div class="vgc-tablewrap" role="group" aria-label="A/B table, scrolls sideways on small screens" tabindex="0">
           <table class="vgc-table">
             <caption>Interleaved A/B samples. “Win rate · performance Elo” is shown per version.</caption>
-            <thead><tr><th scope="col">Sample</th><th scope="col">The variant</th><th scope="col" class="num">Sets (control / variant)</th><th scope="col" class="num">Control: win rate · performance Elo</th><th scope="col" class="num">Variant: win rate · performance Elo</th><th scope="col" class="num">Rating-adjusted effect, Elo [95% interval]</th><th scope="col">Reading</th></tr></thead>
+            <thead><tr><th scope="col">Sample</th><th scope="col">The variant</th><th scope="col" class="num">Rating-adjusted effect, Elo [95% interval]</th><th scope="col">Reading</th><th scope="col" class="num">Control: win rate · performance Elo</th><th scope="col" class="num">Variant: win rate · performance Elo</th></tr></thead>
             <tbody id="ladder-ab"></tbody>
           </table>
         </div>
@@ -92,7 +92,7 @@
           <li><strong>Performance Elo.</strong> The rating at which the bot’s results against the opponents it actually met, each at their own rating at the time, would be even on average. It is a maximum-likelihood fit with a 95% interval from resampling opponents, so it can be compared across samples. Early forfeits and disconnections are left out. With 150 to 300 sets the interval is still about ±70 to ±100 Elo.</li>
           <li><strong>Interleaved A/B.</strong> From s07 every set flips a coin to play the control or the variant. Both versions meet the same crowd at the same hours, so quiet nights and strong opponents hit both equally. That is much fairer than running one version after the other.</li>
           <li><strong>Rating-adjusted effect.</strong> A logistic regression of “won the set” on which version played and the opponent’s rating, converted to Elo points. Positive means the variant is better. The interval comes from resampling sets. When it contains zero, the sample cannot tell the two versions apart.</li>
-          <li><strong>What it shows so far.</strong> Offline, against other bots, each variant looked 3 to 6 points better than the control. On the ladder, in both finished A/B samples the variant was not clearly better, and its point estimate was below zero. The intervals are wide, so small gains are not ruled out, but there is no sign that offline gains carry over to real players. Bot-vs-bot tests rank teams better than they rank bots. The current sample is still running; its numbers are interim.</li>
+          <li><strong>What it shows so far.</strong> Offline, against other bots, the variants looked up to 3 to 6 points better than an earlier version. On the ladder, in both finished A/B samples the variant was not clearly better and its point estimate was below zero, but both intervals include zero: small gains are neither confirmed nor ruled out. A 300-set sample can only separate versions about ±95 Elo apart; from s10 samples are 600 sets. Bot-vs-bot tests rank teams better than they rank bots.</li>
           </ul>
         <p><a class="btn btn-ghost" href="/vgc/">← Back to the replay analyzer</a></p>
       </div>
