@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 
 const LANDING = ['/vgc/', '/pt/vgc/'];
-const REPORTS = ['real_bo3_set', 'selfplay_proven_win', 'selfplay_with_paste'].map(n => `/vgc/reports/${n}.html`);
+const REPORTS = ['real_bo3_set', 'ladder_proven_win', 'ladder_close_set', 'selfplay_proven_win', 'selfplay_with_paste'].map(n => `/vgc/reports/${n}.html`);
 
 test.beforeEach(async ({ page }, testInfo) => {
   const problems = [];
@@ -219,4 +219,63 @@ for (const url of REPORTS) {
     expect(html).not.toMatch(/replay\.pokemonshowdown\.com|\/mnt\/|\/home\/|palmeida/);
     expect(external).toEqual([]);
   });
+}
+
+// The ladder history pages (/vgc/ladder/, /pt/vgc/ladder/): rendered from the committed, anonymized /vgc/data/ladder.json.
+const LADDER = [
+  { url: '/vgc/ladder/', updated: /^Updated [A-Z][a-z]{2} \d{1,2}, 20\d\d$/, interim: 'Interim' },
+  { url: '/pt/vgc/ladder/', updated: /^Atualizado em \d{1,2} [a-z]{3} 20\d\d$/, interim: 'Parcial' },
+];
+
+test('the landing pages link to the ladder history page', async ({ page }) => {
+  await page.goto('/vgc/');
+  await expect(page.locator('a[href="/vgc/ladder/"]')).toHaveCount(1);
+  await page.goto('/pt/vgc/');
+  await expect(page.locator('a[href="/pt/vgc/ladder/"]')).toHaveCount(1);
+});
+
+test('ladder.json is anonymous aggregates only', async ({ request }) => {
+  const res = await request.get('/vgc/data/ladder.json');
+  expect(res.status()).toBe(200);
+  const raw = await res.text();
+  const d = JSON.parse(raw);
+  expect(d.bot).toBe('RNADy-Bot');
+  expect(d.samples.length).toBeGreaterThanOrEqual(9);
+  expect(d.series.points.length).toBeGreaterThan(1000);
+  for (const bad of ['username', 'userid', 'opponent"', 'battle-', '/mnt', '/home', '@', 'checkpoint', 'password']) {
+    expect(raw.toLowerCase(), bad).not.toContain(bad);
+  }
+});
+
+for (const { url, updated, interim } of LADDER) {
+  test(`ladder ${url}: chart, sample table, A/B table and the updated note render`, async ({ page, request }) => {
+    await page.goto(url);
+    await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
+    await expect(page.locator('#ladder-chart svg[role="img"] polyline.lc-line')).toBeAttached();
+    await expect(page.locator('#ladder-chart svg title')).not.toBeEmpty();
+    await expect(page.locator('#ladder-samples tr')).toHaveCount(9);
+    await expect(page.locator('#ladder-samples tr.row-interim')).toHaveCount(1);
+    await expect(page.locator('#ladder-samples tr.row-interim')).toContainText(interim);
+    await expect(page.locator('#ladder-ab tr')).toHaveCount(3);
+    await expect(page.locator('#ladder-stats li')).toHaveCount(4);
+    // on a desktop-width screen the A/B table fits without sideways scrolling (the effect column stays visible)
+    if (page.viewportSize().width >= 1280) {
+      const fits = await page.locator('#ladder-ab').evaluate(tb => { const w = tb.closest('.vgc-tablewrap'); return w.scrollWidth <= w.clientWidth; });
+      expect(fits).toBe(true);
+    }
+    await expect(page.locator('#ladder-updated')).toHaveText(updated);
+    await expect(page.locator('table th[scope="col"]').first()).toBeVisible();
+    await noHorizontalScroll(page);
+    const hrefs = await page.$$eval('a[href^="/"]', as => [...new Set(as.map(a => a.getAttribute('href').split('#')[0]))]);
+    for (const href of hrefs) expect((await request.get(href)).status(), href).toBe(200);
+  });
+
+  for (const scheme of ['light', 'dark']) {
+    test(`ladder ${url}: no serious accessibility violations (${scheme})`, async ({ page }) => {
+      await page.emulateMedia({ colorScheme: scheme });
+      await page.goto(url);
+      await expect(page.locator('#ladder-samples tr')).toHaveCount(9);
+      await noSeriousAxe(page);
+    });
+  }
 }

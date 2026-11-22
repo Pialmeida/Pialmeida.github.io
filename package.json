@@ -5,7 +5,7 @@
   "description": "Personal portfolio site. Static HTML/CSS/JS; this package only holds the test tooling.",
   "scripts": {
     "serve": "node tests/serve.js",
-    "lint": "html-validate index.html 404.html pt/index.html vgc/index.html pt/vgc/index.html && html-validate --config tests/htmlvalidate-reports.json vgc/reports/*.html && node --check js/fluid.js && node --check js/main.js && node --check js/fourier.js && node --check js/projects.js",
+    "lint": "html-validate index.html 404.html pt/index.html vgc/index.html pt/vgc/index.html vgc/ladder/index.html pt/vgc/ladder/index.html && html-validate --config tests/htmlvalidate-reports.json vgc/reports/*.html && node --check js/fluid.js && node --check js/main.js && node --check js/fourier.js && node --check js/projects.js && node --check vgc/ladder.js",
     "test:unit": "node --test tests/unit/*.test.js",
     "test:e2e": "playwright test",
     "test": "npm run lint && npm run test:unit && npm run test:e2e"

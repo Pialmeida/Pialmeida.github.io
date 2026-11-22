@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RNADy-Bot na ladder — Pedro Ivo Almeida</title>
+  <meta name="description" content="O histórico do RNADy-Bot na ladder do Pokémon Showdown: rating ao longo do tempo, cada amostra e os testes A/B que decidem qual versão joga a seguir.">
+  <link rel="alternate" hreflang="en" href="https://pialmeida.github.io/vgc/ladder/">
+  <link rel="alternate" hreflang="pt-BR" href="https://pialmeida.github.io/pt/vgc/ladder/">
+  <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="stylesheet" href="/vgc/vgc.css">
+  <script>try { const t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}</script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Ir para o conteúdo</a>
+
+  <header class="site-header">
+    <nav class="nav container" aria-label="Principal">
+      <a class="brand" href="/pt/" aria-label="Início">P<span>I</span>A</a>
+      <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="nav-links" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+      <ul class="nav-links" id="nav-links">
+        <li><a href="/pt/vgc/">Analisador de replays</a></li>
+        <li><a href="#chart">Gráfico de rating</a></li>
+        <li><a href="#samples">Amostras</a></li>
+        <li><a href="#how">Como ler</a></li>
+        <li><button class="lang-toggle pixel" type="button" aria-label="Mudar para inglês" onclick="try{localStorage.setItem('site-lang','en')}catch(e){}location.href='/vgc/ladder/'">EN</button></li>
+        <li><button class="theme-toggle" type="button" aria-label="Alternar modo escuro">
+          <svg viewBox="0 0 8 8" aria-hidden="true" shape-rendering="crispEdges"><path d="M3 0h2v1H3zM1 1h2v1H1zM5 1h2v1H5zM0 3h1v2H0zM7 3h1v2H7zM1 6h2v1H1zM5 6h2v1H5zM3 7h2v1H3zM3 2h2v1H3zM2 3h4v2H2zM3 5h2v1H3z"/></svg>
+        </button></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main" class="vgc-ladder">
+    <section class="section vgc-intro">
+      <div class="container">
+        <p class="section-label pixel">Projeto · IA para Pokémon competitivo</p>
+        <h1>RNADy-Bot na ladder do Showdown</h1>
+        <p class="vgc-lede">O RNADy-Bot joga séries melhor-de-três ranqueadas contra jogadores reais na ladder do Pokémon Showdown (Champions Reg M-C). Esta página é o seu histórico: o rating da conta ao longo do tempo, cada bloco de séries que medi e os testes A/B que uso para decidir qual versão joga a seguir.</p>
+        <p class="vgc-lede">A ladder é o teste de verdade. Resultados de bot contra bot são só um primeiro filtro.</p>
+        <p class="vgc-updated" id="ladder-updated">Atualizado em …</p>
+        <p class="vgc-status" id="ladder-status" role="status">Carregando os dados da ladder…</p>
+        <noscript><p class="vgc-status">O gráfico de rating e as tabelas precisam de JavaScript.</p></noscript>
+        <ul class="vgc-hard" id="ladder-stats"></ul>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="chart">
+      <div class="container">
+        <h2>Rating ao longo do tempo</h2>
+        <p class="vgc-lede">O rating da conta após cada série ranqueada. As faixas sombreadas são as amostras medidas. As linhas tracejadas são os cortes do top 500 e do top 100 da ladder.</p>
+        <figure class="lc-figure">
+          <div id="ladder-chart"></div>
+          <figcaption>Rating da conta após cada série, com os blocos de amostra (de s01 até a mais recente) sombreados. Os cortes são os valores mais recentes da lista dos melhores da ladder.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="section" id="samples">
+      <div class="container">
+        <h2>Amostras</h2>
+        <p class="vgc-lede">Cada amostra é um bloco de séries jogadas por uma configuração fixa. O Elo de desempenho é explicado abaixo; os intervalos são largos, então leia-os como faixas.</p>
+        <div class="vgc-tablewrap" role="group" aria-label="Tabela de amostras, rola para o lado em telas pequenas" tabindex="0">
+          <table class="vgc-table">
+            <caption>Resultados por amostra. A taxa de vitórias conta séries (melhor-de-três) que terminaram normalmente.</caption>
+            <thead><tr><th scope="col">Amostra</th><th scope="col">Datas</th><th scope="col">O bot</th><th scope="col" class="num">Séries</th><th scope="col" class="num">Taxa de vitórias</th><th scope="col" class="num">Elo de desempenho [intervalo de 95%]</th></tr></thead>
+            <tbody id="ladder-samples"></tbody>
+          </table>
+        </div>
+
+        <h2 id="ab">Comparações A/B</h2>
+        <p class="vgc-lede">A partir da s07 o controle e uma variante se alternam por sorteio na mesma conta, então enfrentam os mesmos oponentes nos mesmos horários. O efeito é o desempenho da variante menos o do controle, ajustado pelo rating do oponente.</p>
+        <div class="vgc-tablewrap" role="group" aria-label="Tabela A/B, rola para o lado em telas pequenas" tabindex="0">
+          <table class="vgc-table">
+            <caption>Amostras A/B intercaladas. “Taxa de vitórias · Elo de desempenho” aparece por versão.</caption>
+            <thead><tr><th scope="col">Amostra</th><th scope="col">A variante</th><th scope="col" class="num">Efeito ajustado pelo rating, Elo [intervalo de 95%]</th><th scope="col">Leitura</th><th scope="col" class="num">Controle: taxa de vitórias · Elo de desempenho</th><th scope="col" class="num">Variante: taxa de vitórias · Elo de desempenho</th></tr></thead>
+            <tbody id="ladder-ab"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-alt" id="how">
+      <div class="container vgc-how">
+        <h2>Como ler isto</h2>
+        <ul>
+          <li><strong>Uma amostra.</strong> Um bloco de 150 a 300 séries melhor-de-três na ladder pública, jogadas por uma versão fixa do bot. O rating da conta passa de uma amostra para a próxima, então cada amostra é medida isoladamente.</li>
+          <li><strong>Por que não só o rating?</strong> O rating da ladder muda a cada série, depende de quem está online e oscila: o mesmo bot ficou cerca de 80 Elo de distância em dois blocos diferentes de 150 séries. É um bom placar, mas uma forma ruim de comparar duas versões.</li>
+          <li><strong>Elo de desempenho.</strong> O rating em que os resultados do bot contra os oponentes que ele realmente enfrentou, cada um com o rating que tinha na hora, ficariam equilibrados em média. É um ajuste de máxima verossimilhança com intervalo de 95% por reamostragem de oponentes, então pode ser comparado entre amostras. Desistências antecipadas e desconexões ficam de fora. Com 150 a 300 séries o intervalo ainda é de cerca de ±70 a ±100 Elo.</li>
+          <li><strong>A/B intercalado.</strong> A partir da s07 cada série sorteia se joga o controle ou a variante. As duas versões enfrentam o mesmo público nos mesmos horários, então madrugadas fracas e oponentes fortes afetam as duas igualmente. É muito mais justo do que rodar uma versão depois da outra.</li>
+          <li><strong>Efeito ajustado pelo rating.</strong> Uma regressão logística de “venceu a série” sobre qual versão jogou e o rating do oponente, convertida em pontos de Elo. Positivo significa que a variante é melhor. O intervalo vem da reamostragem das séries. Quando ele contém o zero, a amostra não consegue distinguir as duas versões.</li>
+          <li><strong>O que mostra até agora.</strong> Offline, contra outros bots, as variantes pareciam até 3 a 6 pontos melhores que uma versão anterior. Na ladder, nas duas amostras A/B concluídas a variante não foi claramente melhor e sua estimativa pontual ficou abaixo de zero, mas os dois intervalos incluem o zero: pequenos ganhos não estão confirmados nem descartados. Uma amostra de 300 séries só separa versões a cerca de ±95 Elo de distância; a partir da s10 as amostras têm 600 séries. Testes de bot contra bot ordenam melhor os times do que os bots.</li>
+          </ul>
+        <p><a class="btn btn-ghost" href="/pt/vgc/">← Voltar ao analisador de replays</a></p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="vgc-notice">Pokémon e os nomes dos personagens de Pokémon são marcas registradas da Nintendo, Creatures e GAME FREAK (The Pokémon Company). Este é um projeto de fã sem fins comerciais, sem afiliação nem endosso deles ou do Pokémon Showdown. Os oponentes não são nomeados: os dados da ladder são agregados.</p>
+    </div>
+  </footer>
+
+  <script src="/js/main.js" defer></script>
+  <script src="/vgc/ladder.js" defer></script>
+</body>
+</html>
