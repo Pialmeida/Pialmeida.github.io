@@ -121,7 +121,7 @@
       const th = h('th', { scope: 'row' }, s.id);
       if (live) th.append(h('span', { class: 'tag' }, T.interim));
       const pe = s.performance_elo;
-      tr.append(th, h('td', {}, range(s.start, s.end)), h('td', {}, text(s.bot)),
+      tr.append(th, h('td', { class: 'dates' }, range(s.start, s.end)), h('td', { class: 'desc' }, text(s.bot)),
         h('td', { class: 'num' }, String(s.sets) + (live ? ` / ${s.target_sets}` : '')),
         h('td', { class: 'num' }, pct(s.win_rate)),
         h('td', { class: 'num' }, pe ? `${pe.elo} [${pe.ci95[0]}, ${pe.ci95[1]}]` : T.na));

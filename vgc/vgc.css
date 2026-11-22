@@ -69,5 +69,6 @@
 .vgc-table .row-interim td, .vgc-table .row-interim th { background: var(--bg-alt); }
 .vgc-ladder h2 { margin: 44px 0 4px; font-size: clamp(1.4rem, 2.6vw, 1.9rem); }
 .vgc-ladder > .container > p { max-width: 760px; color: var(--muted); }
-.vgc-table td.desc { min-width: 200px; }
+.vgc-table td.desc { min-width: 220px; }
 .vgc-table .sub { color: var(--muted); font-size: .8rem; }
+.vgc-table td.dates { min-width: 120px; }
