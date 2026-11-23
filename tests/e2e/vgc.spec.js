@@ -253,10 +253,10 @@ for (const { url, updated, interim } of LADDER) {
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
     await expect(page.locator('#ladder-chart svg[role="img"] polyline.lc-line')).toBeAttached();
     await expect(page.locator('#ladder-chart svg title')).not.toBeEmpty();
-    await expect(page.locator('#ladder-samples tr')).toHaveCount(9);
+    await expect(page.locator('#ladder-samples tr')).toHaveCount(10);
     await expect(page.locator('#ladder-samples tr.row-interim')).toHaveCount(1);
     await expect(page.locator('#ladder-samples tr.row-interim')).toContainText(interim);
-    await expect(page.locator('#ladder-ab tr')).toHaveCount(3);
+    await expect(page.locator('#ladder-ab tr')).toHaveCount(4);
     await expect(page.locator('#ladder-stats li')).toHaveCount(4);
     // on a desktop-width screen the A/B table fits without sideways scrolling (the effect column stays visible)
     if (page.viewportSize().width >= 1280) {
@@ -274,7 +274,7 @@ for (const { url, updated, interim } of LADDER) {
     test(`ladder ${url}: no serious accessibility violations (${scheme})`, async ({ page }) => {
       await page.emulateMedia({ colorScheme: scheme });
       await page.goto(url);
-      await expect(page.locator('#ladder-samples tr')).toHaveCount(9);
+      await expect(page.locator('#ladder-samples tr')).toHaveCount(10);
       await noSeriousAxe(page);
     });
   }
