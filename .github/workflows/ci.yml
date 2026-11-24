@@ -20,7 +20,8 @@ jobs:
     name: Lint, physics & rendering tests
     # Pinned: Playwright 1.55 ships browsers for Ubuntu 24.04, not 26.04 (ubuntu-latest).
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    # 25: the apt --with-deps Chromium install alone took 7.5 min on 2026-11-24 runners (two runs cancelled at 15).
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
 
